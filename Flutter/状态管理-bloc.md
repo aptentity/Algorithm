@@ -1,0 +1,12 @@
+BlocBuilder
+
+BlocBuilder是一个Flutter widget，需要一个bloc和一个builder函数。
+
+BlocBuilder在widget状态改变时处理构建widget。
+
+builder函数可能会被调用多次，所以应该仅仅返回对应状态的widget。
+
+如果想在状态改变时做什么操作（例如navigation、显示dialog）可以在BlocListener中。
+
+如果bloc被忽略，BlocBuilder会自动使用BlocProvider和当前的BuldContext
+
