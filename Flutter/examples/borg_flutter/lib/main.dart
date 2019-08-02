@@ -1,12 +1,36 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:borg_flutter/page/error_page.dart';
 
 void main(){
-  FlutterError.onError = (FlutterErrorDetails details){
-    print("---------------begin----------------");
-    print(details);
-    print("---------------end----------------");
+
+  var isInDebugMode = false;
+
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    return ErrorPage(details);
   };
-  runApp(MyApp());
+
+  //全局的异常捕获
+  FlutterError.onError = (FlutterErrorDetails details) async {
+    if (isInDebugMode) {
+      FlutterError.dumpErrorToConsole(details);
+    } else {
+      Zone.current.handleUncaughtError(details.exception, details.stack);
+    }
+  };
+  runZoned<Future<Null>>(() async {
+    runApp(MyApp());
+  }, onError: (error, stackTrace) async {
+    _handleError(error, stackTrace);
+  });
+
+}
+
+void  _handleError(error, stackTrace) async{
+  print("--------------_handleError begin---------------");
+  print(error);
+  print(stackTrace);
+  print("--------------_handleError end-----------");
 }
 
 class MyApp extends StatelessWidget {
