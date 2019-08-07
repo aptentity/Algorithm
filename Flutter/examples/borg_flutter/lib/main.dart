@@ -1,8 +1,14 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:borg_flutter/page/error_page.dart';
+import 'package:borg_flutter/modules/task_test.dart';
+import 'package:borg_flutter/modules/isolate_test.dart';
 
-void main(){
+void main() async{
+  taskTest();
+  print(await asyncFibonacci(20));
+
 
   var isInDebugMode = false;
 
@@ -23,7 +29,7 @@ void main(){
   }, onError: (error, stackTrace) async {
     _handleError(error, stackTrace);
   });
-
+  print("main end");
 }
 
 void  _handleError(error, stackTrace) async{
@@ -68,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var list = [1,2,3];
-    _counter = list.elementAt(3);
+    //_counter = list.elementAt(3);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
