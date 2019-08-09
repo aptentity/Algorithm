@@ -2,14 +2,13 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:borg_flutter/page/error_page.dart';
-import 'package:borg_flutter/modules/task_test.dart';
-import 'package:borg_flutter/modules/isolate_test.dart';
+import 'package:borg_flutter/page/page_popup_menu.dart';
+import 'package:borg_flutter/page/page_button.dart';
+import 'package:borg_flutter/page/page_dropdown_button.dart';
+import 'package:borg_flutter/page/page_expansion_panel.dart';
+import 'package:borg_flutter/page/page_webview.dart';
 
 void main() async{
-  taskTest();
-  print(await asyncFibonacci(20));
-
-
   var isInDebugMode = false;
 
   ErrorWidget.builder = (FlutterErrorDetails details) {
@@ -29,7 +28,6 @@ void main() async{
   }, onError: (error, stackTrace) async {
     _handleError(error, stackTrace);
   });
-  print("main end");
 }
 
 void  _handleError(error, stackTrace) async{
@@ -40,7 +38,6 @@ void  _handleError(error, stackTrace) async{
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -49,55 +46,81 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
+      routes: routers,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatefulWidget{
   MyHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyHomePageState createState()=>_MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class _MyHomePageState extends State<MyHomePage>{
 
   @override
   Widget build(BuildContext context) {
-    var list = [1,2,3];
-    //_counter = list.elementAt(3);
+    var routerLists = routers.keys.toList();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+      body: new Container(
+        child: new ListView.builder(
+          itemCount: routers.length,
+          itemBuilder: (context,index){
+            //print("---------------------$index-------------------");
+            return new InkWell(
+              onTap: (){
+                Navigator.of(context).pushNamed(routerLists[index]);
+              },
+              child: new Card(
+                child: new Container(
+                  alignment: Alignment.centerLeft,
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  height: 50,
+                  child: new Text(routerName[index]),
+                ),
+              ),
+            );
+          },
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
       ),
     );
   }
 }
+
+
+var routerName = [
+  "Popup Menu Button",
+  "Buttons",
+  "Dropdown Button",
+  "Expansion Panel",
+  FlutterWebviewPluginPage.name,
+];
+
+Map<String,WidgetBuilder> routers = {
+  "widget/popup_menu_button": (context) {
+    return PopupMenuPage();
+  },
+  "widget/buttons":(context){
+    return ButtonsPage();
+  },
+  "widget/dropdown_button":(context){
+    return DropdownButtonPage();
+  },
+  ExpansionPanelsDemo.routeName:(context){
+    return ExpansionPanelsDemo();
+  },
+  FlutterWebviewPluginPage.routeName:(context){
+    return FlutterWebviewPluginPage();
+  },
+};
+
+
+
+
