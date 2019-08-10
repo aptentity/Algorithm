@@ -8,6 +8,7 @@ import 'package:borg_flutter/page/page_dropdown_button.dart';
 import 'package:borg_flutter/page/page_expansion_panel.dart';
 import 'package:borg_flutter/page/page_webview.dart';
 import 'package:borg_flutter/page/page_webview_flutter.dart';
+import 'package:borg_flutter/page/page_html.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -103,6 +104,7 @@ var routerName = [
   "Expansion Panel",
   FlutterWebviewPluginPage.name,
   WebViewFlutterPage.name,
+  HtmlPage.name,
 ];
 
 Map<String,WidgetBuilder> routers = {
@@ -123,6 +125,9 @@ Map<String,WidgetBuilder> routers = {
   },
   WebViewFlutterPage.routeName:(context){
     return WebViewFlutterPage();
+  },
+  HtmlPage.routeName:(context){
+    return HtmlPage();
   },
 };
 

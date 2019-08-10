@@ -31,6 +31,9 @@ dependencies:
   flutter_webview_plugin: ^0.3.5
   webview_flutter: ^0.3.11+2
 
+  # html
+  flutter_html: ^0.10.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

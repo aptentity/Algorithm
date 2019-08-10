@@ -4,7 +4,7 @@
 - 不能在H5进入某个URL之前拦截
 - 单例，无法打开多个webview
 
-
+在activity上添加webview的方式
 
 
 
@@ -19,3 +19,16 @@ Currently apps need to opt-in for the UIViews embedding preview on iOS by adding
 
 
 JS调用Flutter有两种方法：`使用javascriptChannels发送消息`和`使用路由委托（navigationDelegate）拦截url`
+
+
+
+WebViewController：WebView、WebViewPlatformController、_PlatformCallbacksHandler
+
+CookieManager
+
+
+
+
+
+# [flutter_inappbrowser](https://pub.flutter-io.cn/packages/flutter_inappbrowser)
+
