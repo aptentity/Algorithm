@@ -12,6 +12,8 @@ import 'package:borg_flutter/page/page_html.dart';
 import 'package:borg_flutter/page/page_tab_bar.dart';
 import 'package:borg_flutter/page/page_bottom_navigation_bar.dart';
 import 'package:borg_flutter/page/page_bottom_app_bar.dart';
+import 'package:borg_flutter/page/page_sliver.dart';
+import 'package:borg_flutter/page/page_sliver2.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -111,6 +113,8 @@ var routerName = [
   TabBarPage.name,
   BottomNavigationBarPage.name,
   BottomAppBarPage.name,
+  SliverPage.name,
+  SliverAppBarPage.name,
 ];
 
 Map<String,WidgetBuilder> routers = {
@@ -143,6 +147,12 @@ Map<String,WidgetBuilder> routers = {
   },
   BottomAppBarPage.routeName:(context){
     return BottomAppBarPage();
+  },
+  SliverPage.routeName:(context){
+    return SliverPage();
+  },
+  SliverAppBarPage.routeName:(context){
+    return SliverAppBarPage();
   },
 };
 

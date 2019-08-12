@@ -34,6 +34,8 @@ dependencies:
   # html
   flutter_html: ^0.10.4
 
+  flutter_swiper: ^1.1.6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
