@@ -9,6 +9,9 @@ import 'package:borg_flutter/page/page_expansion_panel.dart';
 import 'package:borg_flutter/page/page_webview.dart';
 import 'package:borg_flutter/page/page_webview_flutter.dart';
 import 'package:borg_flutter/page/page_html.dart';
+import 'package:borg_flutter/page/page_tab_bar.dart';
+import 'package:borg_flutter/page/page_bottom_navigation_bar.dart';
+import 'package:borg_flutter/page/page_bottom_app_bar.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -105,6 +108,9 @@ var routerName = [
   FlutterWebviewPluginPage.name,
   WebViewFlutterPage.name,
   HtmlPage.name,
+  TabBarPage.name,
+  BottomNavigationBarPage.name,
+  BottomAppBarPage.name,
 ];
 
 Map<String,WidgetBuilder> routers = {
@@ -128,6 +134,15 @@ Map<String,WidgetBuilder> routers = {
   },
   HtmlPage.routeName:(context){
     return HtmlPage();
+  },
+  TabBarPage.routeName:(context){
+    return TabBarPage();
+  },
+  BottomNavigationBarPage.routeName:(context){
+    return BottomNavigationBarPage();
+  },
+  BottomAppBarPage.routeName:(context){
+    return BottomAppBarPage();
   },
 };
 
