@@ -36,6 +36,7 @@ class FirstPageState extends State<FirstPage>
           labelColor: Color.fromARGB(0xff, 0x32, 0x74, 0xf9),
           indicatorColor: Color.fromARGB(0xff, 0x32, 0x74, 0xf9),
           indicator:DKUnderlineTabIndicator(
+            wantWidth: 30,
             borderSide: BorderSide(
               width: 2,
               color: Colors.blue,

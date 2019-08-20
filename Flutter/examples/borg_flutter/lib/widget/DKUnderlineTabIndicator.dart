@@ -7,12 +7,15 @@ class DKUnderlineTabIndicator extends Decoration {
   const DKUnderlineTabIndicator({
     this.borderSide = const BorderSide(width: 2.0,color: Colors.white),
     this.insets = EdgeInsets.zero,
+    this.wantWidth = 20,
   }) : assert(borderSide != null),
         assert(insets != null);
 
   final BorderSide borderSide;
 
   final EdgeInsetsGeometry insets;
+
+  final double wantWidth;
 
   @override
   Decoration lerpFrom(Decoration a, double t) {
@@ -38,16 +41,17 @@ class DKUnderlineTabIndicator extends Decoration {
 
   @override
   _UnderlinePainter createBoxPainter([ VoidCallback onChanged ]) {
-    return _UnderlinePainter(this, onChanged);
+    return _UnderlinePainter(this, wantWidth, onChanged);
   }
 }
 
 class _UnderlinePainter extends BoxPainter {
-  _UnderlinePainter(this.decoration, VoidCallback onChanged)
+  _UnderlinePainter(this.decoration, this.wantWidth, VoidCallback onChanged)
       : assert(decoration != null),
         super(onChanged);
 
   final DKUnderlineTabIndicator decoration;
+  final double wantWidth;
 
   BorderSide get borderSide => decoration.borderSide;
   EdgeInsetsGeometry get insets => decoration.insets;
@@ -57,8 +61,6 @@ class _UnderlinePainter extends BoxPainter {
     assert(textDirection != null);
     final Rect indicator = insets.resolve(textDirection).deflateRect(rect);
 
-    //希望的宽度
-    double wantWidth = 20;
     //取中间坐标
     double cw = (indicator.left + indicator.right) / 2;
     return Rect.fromLTWH(cw - wantWidth / 2,
