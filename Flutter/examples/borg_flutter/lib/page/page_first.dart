@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:borg_flutter/page/page_second.dart';
 import 'package:borg_flutter/page/page_third.dart';
+import 'package:borg_flutter/widget/DKUnderlineTabIndicator.dart';
 
 class FirstPage extends StatefulWidget {
   @override
@@ -34,6 +35,11 @@ class FirstPageState extends State<FirstPage>
           unselectedLabelColor:Color.fromARGB(0xff, 0xad, 0xb4, 0xc2),
           labelColor: Color.fromARGB(0xff, 0x32, 0x74, 0xf9),
           indicatorColor: Color.fromARGB(0xff, 0x32, 0x74, 0xf9),
+          indicator:DKUnderlineTabIndicator(
+            borderSide: BorderSide(
+              width: 2,
+              color: Colors.blue,
+          ),),//使用自定义指示器
           indicatorSize: TabBarIndicatorSize.label,
           tabs: <Widget>[
             new Tab(text:"蛋壳资讯"),

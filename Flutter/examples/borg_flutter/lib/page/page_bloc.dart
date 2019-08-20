@@ -16,6 +16,16 @@ class BlocPage extends StatelessWidget {
           title: Text('Counter'),
         ),
         body: BlocPage1(),
+        floatingActionButton:
+            BlocBuilder<CounterBloc, int>(builder: (context, count) {
+          return FloatingActionButton(
+            child: Icon(Icons.remove),
+            onPressed: () {
+              final CounterBloc counterBloc = BlocProvider.of<CounterBloc>(context);
+              counterBloc.dispatch(CounterEvent.decrement);
+            },
+          );
+        }),
       ),
     );
   }
@@ -35,23 +45,17 @@ class BlocPage1 extends StatelessWidget {
                 '$count',
                 style: TextStyle(fontSize: 24.0),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 5.0),
-                child: FloatingActionButton(
-                  child: Icon(Icons.add),
-                  onPressed: () {
-                    counterBloc.dispatch(CounterEvent.increment);
-                  },
-                ),
+              FlatButton(
+                child: Icon(Icons.add),
+                onPressed: () {
+                  counterBloc.dispatch(CounterEvent.increment);
+                },
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 5.0),
-                child: FloatingActionButton(
-                  child: Icon(Icons.remove),
-                  onPressed: () {
-                    counterBloc.dispatch(CounterEvent.decrement);
-                  },
-                ),
+              FlatButton(
+                child: Icon(Icons.remove),
+                onPressed: () {
+                  counterBloc.dispatch(CounterEvent.decrement);
+                },
               ),
             ],
           ),
