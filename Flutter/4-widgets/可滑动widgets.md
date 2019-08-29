@@ -42,3 +42,11 @@ const CupertinoScrollbar({
 
 ListView`是最常用的可滚动`widget`，它可以沿一个方向线性排布所有子`widget
 
+
+
+# NestedScrollView
+
+支持嵌套滑动的 ScrollView。
+
+
+

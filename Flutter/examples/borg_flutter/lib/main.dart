@@ -16,6 +16,8 @@ import 'package:borg_flutter/page/page_sliver.dart';
 import 'package:borg_flutter/page/page_sliver2.dart';
 import 'package:borg_flutter/page/page_provider.dart';
 import 'package:borg_flutter/page/page_bloc.dart';
+import 'package:borg_flutter/widget_demo/page/page_row_demo.dart';
+import 'package:borg_flutter/widget_demo/page/page_stack_demo.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -119,6 +121,8 @@ var routerName = [
   SliverAppBarPage.name,
   ProviderPage.name,
   BlocPage.name,
+  RowDemoPage.name,
+  StackDemoPage.name,
 ];
 
 Map<String,WidgetBuilder> routers = {
@@ -163,6 +167,12 @@ Map<String,WidgetBuilder> routers = {
   },
   BlocPage.routeName:(context){
     return BlocPage();
+  },
+  RowDemoPage.routeName:(context){
+    return RowDemoPage();
+  },
+  StackDemoPage.routeName:(context){
+    return StackDemoPage();
   },
 };
 
