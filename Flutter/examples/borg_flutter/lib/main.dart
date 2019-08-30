@@ -19,6 +19,7 @@ import 'package:borg_flutter/page/page_bloc.dart';
 import 'package:borg_flutter/widget_demo/page/page_row_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_stack_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_hero_demo.dart';
+import 'package:borg_flutter/widget_demo/page/page_animation_demo.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -125,6 +126,7 @@ var routerName = [
   RowDemoPage.name,
   StackDemoPage.name,
   HeroSourcePage.name,
+  AnimationDemoPage.name,
 ];
 
 Map<String,WidgetBuilder> routers = {
@@ -178,6 +180,9 @@ Map<String,WidgetBuilder> routers = {
   },
   HeroSourcePage.routeName:(context){
     return HeroSourcePage();
+  },
+  AnimationDemoPage.routeName:(context){
+    return AnimationDemoPage();
   },
 };
 
