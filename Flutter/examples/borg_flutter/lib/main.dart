@@ -20,6 +20,7 @@ import 'package:borg_flutter/widget_demo/page/page_row_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_stack_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_hero_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_animation_demo.dart';
+import 'package:borg_flutter/widget_demo/page/page_repaintBoundary_demo.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -50,9 +51,12 @@ void  _handleError(error, stackTrace) async{
   print("--------------_handleError end-----------");
 }
 
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 class MyApp extends StatelessWidget {
+  static BuildContext myContext;
   @override
   Widget build(BuildContext context) {
+    myContext = context;
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -60,6 +64,10 @@ class MyApp extends StatelessWidget {
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
       routes: routers,
+      navigatorObservers: [
+        GLObserver(), // 导航监听
+        routeObserver, // 路由监听
+      ],
     );
   }
 }
@@ -108,6 +116,37 @@ class _MyHomePageState extends State<MyHomePage>{
 }
 
 
+class GLObserver extends NavigatorObserver {
+  // 添加导航监听后，跳转的时候需要使用Navigator.push路由
+  @override
+  void didPush(Route route, Route previousRoute) {
+    super.didPush(route, previousRoute);
+
+    var previousName = '';
+    if (previousRoute == null) {
+      previousName = 'null';
+    }else {
+      previousName = previousRoute.settings.name;
+    }
+    print('NavObserverDidPush-Current: $route  Previous: $previousName');
+  }
+
+  @override
+  void didPop(Route route, Route previousRoute) {
+    super.didPop(route, previousRoute);
+
+    var previousName = '';
+    if (previousRoute == null) {
+      previousName = 'null';
+    }else {
+      previousName = previousRoute.settings.name;
+    }
+    print('NavObserverDidPop--Current: $route  Previous: $previousName');
+  }
+}
+
+
+
 var routerName = [
   "Popup Menu Button",
   "Buttons",
@@ -127,6 +166,7 @@ var routerName = [
   StackDemoPage.name,
   HeroSourcePage.name,
   AnimationDemoPage.name,
+  RepaintBoundaryDemo.name,
 ];
 
 Map<String,WidgetBuilder> routers = {
@@ -183,6 +223,9 @@ Map<String,WidgetBuilder> routers = {
   },
   AnimationDemoPage.routeName:(context){
     return AnimationDemoPage();
+  },
+  RepaintBoundaryDemo.routeName:(context){
+    return RepaintBoundaryDemo();
   },
 };
 

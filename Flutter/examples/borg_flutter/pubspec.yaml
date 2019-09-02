@@ -40,6 +40,13 @@ dependencies:
 
   flutter_bloc: ^0.20.1
 
+  oktoast: ^2.2.0
+
+  # 网络请求客户端 https://pub.dartlang.org/packages/dio
+  dio: ^2.1.13
+
+  path_provider: ^1.2.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
