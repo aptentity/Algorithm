@@ -14,13 +14,15 @@ import 'package:borg_flutter/page/page_bottom_navigation_bar.dart';
 import 'package:borg_flutter/page/page_bottom_app_bar.dart';
 import 'package:borg_flutter/page/page_sliver.dart';
 import 'package:borg_flutter/page/page_sliver2.dart';
-import 'package:borg_flutter/page/page_provider.dart';
-import 'package:borg_flutter/page/page_bloc.dart';
+import 'package:borg_flutter/provider_demo/page/page_provider.dart';
+import 'package:borg_flutter/provider_demo/page/page_bloc.dart';
 import 'package:borg_flutter/widget_demo/page/page_row_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_stack_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_hero_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_animation_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_repaintBoundary_demo.dart';
+import 'package:borg_flutter/provider_demo/page/page_provider_demo.dart';
+import 'package:borg_flutter/page/page_communication.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -167,6 +169,8 @@ var routerName = [
   HeroSourcePage.name,
   AnimationDemoPage.name,
   RepaintBoundaryDemo.name,
+  ProviderDemoPage.name,
+  CommunicationPage.name,
 ];
 
 Map<String,WidgetBuilder> routers = {
@@ -226,6 +230,12 @@ Map<String,WidgetBuilder> routers = {
   },
   RepaintBoundaryDemo.routeName:(context){
     return RepaintBoundaryDemo();
+  },
+  ProviderDemoPage.routeName:(context){
+    return ProviderDemoPage();
+  },
+  CommunicationPage.routeName:(context){
+    return CommunicationPage(title: 'CommunicationPage',);
   },
 };
 
