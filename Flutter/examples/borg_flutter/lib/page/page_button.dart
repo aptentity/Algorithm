@@ -22,14 +22,17 @@ class ButtonsPage extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          RaisedButton(
-            color: Colors.green,
-            textColor: Colors.white,
-            disabledColor: Colors.deepOrange,
-            disabledTextColor: Colors.grey,
-            splashColor: Colors.purple,
-            child: Text("Raised button"),
-            onPressed: clickButton,
+          Container(
+            width: 375,
+            child:RaisedButton(
+              color: Colors.green,
+              textColor: Colors.white,
+              disabledColor: Colors.deepOrange,
+              disabledTextColor: Colors.grey,
+              splashColor: Colors.purple,
+              child: Text("Raised button"),
+              onPressed: clickButton,
+            ),
           ),
           RaisedButton(
             color: Colors.green,
