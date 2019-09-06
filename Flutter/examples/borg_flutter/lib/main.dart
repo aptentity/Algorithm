@@ -23,6 +23,8 @@ import 'package:borg_flutter/widget_demo/page/page_animation_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_repaintBoundary_demo.dart';
 import 'package:borg_flutter/provider_demo/page/page_provider_demo.dart';
 import 'package:borg_flutter/page/page_communication.dart';
+import 'package:borg_flutter/network/page/page_netwok_demo.dart';
+import 'package:borg_flutter/screen_adapter/Inner_widgets_flutter_binding.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -40,7 +42,8 @@ void main() async{
     }
   };
   runZoned<Future<Null>>(() async {
-    runApp(MyApp());
+    InnerWidgetsFlutterBinding.ensureInitialized()..attachRootWidget(MyApp())..scheduleForcedFrame();
+    //runApp(MyApp());
   }, onError: (error, stackTrace) async {
     _handleError(error, stackTrace);
   });
@@ -171,6 +174,7 @@ var routerName = [
   RepaintBoundaryDemo.name,
   ProviderDemoPage.name,
   CommunicationPage.name,
+  NetworkPage.name,
 ];
 
 Map<String,WidgetBuilder> routers = {
@@ -236,6 +240,9 @@ Map<String,WidgetBuilder> routers = {
   },
   CommunicationPage.routeName:(context){
     return CommunicationPage(title: 'CommunicationPage',);
+  },
+  NetworkPage.routeName:(context){
+    return NetworkPage();
   },
 };
 

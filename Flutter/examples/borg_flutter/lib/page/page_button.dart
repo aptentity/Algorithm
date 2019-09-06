@@ -52,6 +52,7 @@ class ButtonsPage extends StatelessWidget {
           CustomPaint(
             painter: MyCustomPainter(dataList),
           ),
+          Image.asset("assets/images/status_finish.png"),
         ],
       ),
     );
