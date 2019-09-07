@@ -27,6 +27,9 @@ import 'package:borg_flutter/network/page/page_netwok_demo.dart';
 import 'package:borg_flutter/screen_adapter/Inner_widgets_flutter_binding.dart';
 import 'package:borg_flutter/key_demo/page_stateless_key.dart';
 import 'package:borg_flutter/key_demo/page_stateful_key.dart';
+import 'package:fluro/fluro.dart';
+import 'package:borg_flutter/fluro/application.dart';
+import 'package:borg_flutter/fluro/routes.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -63,6 +66,10 @@ class MyApp extends StatelessWidget {
   static BuildContext myContext;
   @override
   Widget build(BuildContext context) {
+    final router = Router();
+    Application.router = router;
+    Routes.configureRoutes(router);
+
     myContext = context;
     return MaterialApp(
       title: 'Flutter Demo',
@@ -75,6 +82,7 @@ class MyApp extends StatelessWidget {
         GLObserver(), // 导航监听
         routeObserver, // 路由监听
       ],
+      onGenerateRoute: Application.router.generator,
     );
   }
 }

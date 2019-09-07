@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:annotation_route/route.dart';
 import 'package:borg_flutter/router/routers.dart';
 import 'package:borg_flutter/router/borg_router.dart';
+import 'package:borg_flutter/fluro/application.dart';
+import 'package:borg_flutter/fluro/routes.dart';
 
 /// 使用StatefulWidget无法交互，color顺序没有改变
 @ARoute(url:BorgRouters.SwapColorPage)
@@ -40,7 +42,15 @@ class _SwapColor2State extends State<SwapColorPage2> {
         padding: const EdgeInsets.all(8.0),
         child: StatefulColorfulTile(key: UniqueKey()),
       ),
+      RaisedButton(
+        child: Text('go to'),
+        onPressed: gotoPage,
+      ),
     ];
+  }
+
+  gotoPage(){
+    Application.router.navigateTo(context, Routes.demoSimple);
   }
 
   @override
