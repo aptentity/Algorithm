@@ -70,8 +70,16 @@ flutter:
   # assets:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
+
+  # asset_generator 根据pubspec.yaml中设置的目录模板自动向其中添加文件记录的简单脚本
+  # 利用asset_generator脚本生成r.dart 资源文件,方便在代码中引用资源
+  # https://github.com/flutter-dev/asset_generator
+
   assets:
+  # assets begin
+  # images/*
     - assets/images/
+  # assets end
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -25,6 +25,8 @@ import 'package:borg_flutter/provider_demo/page/page_provider_demo.dart';
 import 'package:borg_flutter/page/page_communication.dart';
 import 'package:borg_flutter/network/page/page_netwok_demo.dart';
 import 'package:borg_flutter/screen_adapter/Inner_widgets_flutter_binding.dart';
+import 'package:borg_flutter/key_demo/page_stateless_key.dart';
+import 'package:borg_flutter/key_demo/page_stateful_key.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -175,6 +177,8 @@ var routerName = [
   ProviderDemoPage.name,
   CommunicationPage.name,
   NetworkPage.name,
+  SwapColorPage.name,
+  SwapColorPage2.name,
 ];
 
 Map<String,WidgetBuilder> routers = {
@@ -243,6 +247,12 @@ Map<String,WidgetBuilder> routers = {
   },
   NetworkPage.routeName:(context){
     return NetworkPage();
+  },
+  SwapColorPage.routeName:(context){
+    return SwapColorPage();
+  },
+  SwapColorPage2.routeName:(context){
+    return SwapColorPage2();
   },
 };
 

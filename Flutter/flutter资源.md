@@ -194,3 +194,10 @@ iOS
 
 您也可以通过打开Xcode完全自定义storyboard。在Project Navigator中导航到Runner/Runner然后通过打开Assets.xcassets拖入图片，或者通过在LaunchScreen.storyboard中使用Interface Builder进行自定义。
 
+
+
+# asset_generator
+
+利用asset_generator脚本生成r.dart 资源文件,方便在代码中引用资源
+
+https://github.com/flutter-dev/asset_generator
