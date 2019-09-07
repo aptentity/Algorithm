@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:annotation_route/route.dart';
+import 'package:borg_flutter/router/routers.dart';
+import 'package:borg_flutter/router/borg_router.dart';
 
 /// 使用StatefulWidget无法交互，color顺序没有改变
+@ARoute(url:BorgRouters.SwapColorPage)
 class SwapColorPage2 extends StatefulWidget {
   static const String routeName = '/page/swap_color_page2';
   static const String name = "SwapColorPage2";
+
+  SwapColorPage2(MyRouteOption option): super();
 
   @override
   _SwapColor2State createState() => _SwapColor2State();

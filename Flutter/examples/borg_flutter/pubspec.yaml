@@ -54,6 +54,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  # 使用dart代码生成文件的库 https://pub.dartlang.org/packages/build_runner
+  build_runner: any
+  #https://github.com/alibaba-flutter/annotation_route
+  annotation_route: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

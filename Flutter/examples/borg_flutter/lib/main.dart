@@ -252,7 +252,7 @@ Map<String,WidgetBuilder> routers = {
     return SwapColorPage();
   },
   SwapColorPage2.routeName:(context){
-    return SwapColorPage2();
+    return SwapColorPage2(null);
   },
 };
 

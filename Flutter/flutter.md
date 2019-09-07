@@ -14,7 +14,7 @@
 
 对原生页面和 flutter 页面实现了集中路由管理，可以双向传参、跳转并且进行了共享内存优化
 
-
+https://github.com/alibaba-flutter/annotation_route
 
 # 扩展UI组件库
 
@@ -150,6 +150,8 @@ Widget build(BuildContext context) {
 4：图片复用问题 --- Native和Flutter重复下载相同图片。
 
 
+
+# 绘制
 
 
 
