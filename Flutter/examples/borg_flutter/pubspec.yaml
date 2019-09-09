@@ -49,6 +49,9 @@ dependencies:
 
   event_bus: ^1.0.1
 
+  # https://github.com/alibaba/flutter_boost
+  flutter_boost: ^0.1.51
+
 
 dev_dependencies:
   flutter_test:

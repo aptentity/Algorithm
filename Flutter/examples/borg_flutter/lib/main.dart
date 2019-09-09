@@ -30,6 +30,7 @@ import 'package:borg_flutter/key_demo/page_stateful_key.dart';
 import 'package:fluro/fluro.dart';
 import 'package:borg_flutter/fluro/application.dart';
 import 'package:borg_flutter/fluro/routes.dart';
+import 'package:flutter_boost/flutter_boost.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -60,6 +61,34 @@ void  _handleError(error, stackTrace) async{
   print(stackTrace);
   print("--------------_handleError end-----------");
 }
+
+class BoostApp extends StatefulWidget{
+ @override
+ _BoostApp createState() {
+    return _BoostApp();
+  }
+}
+
+class _BoostApp extends State<BoostApp>{
+  @override
+  void initState() {
+    super.initState();
+    FlutterBoost.singleton.registerPageBuilders({
+      'borg://firstPage':(pageName,params,_)=>MyApp(),
+      'borg://secondPage':(pageName,params,_)=>SwapColorPage2(null),
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Boost example',
+      builder: FlutterBoost.init(),
+      home: Container(),
+    );
+  }
+}
+
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 class MyApp extends StatelessWidget {

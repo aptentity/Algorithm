@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:borg_flutter/router/borg_router.dart';
 import 'package:borg_flutter/router/routers.dart';
+import 'package:flutter_boost/flutter_boost.dart';
 
 /// 使用Stateless的widget可以正常交换
 class SwapColorPage extends StatefulWidget {
@@ -36,6 +37,10 @@ class _SwapColorState extends State<SwapColorPage> {
         child: Text('go to'),
         onPressed: gotoPage,
       ),
+      RaisedButton(
+        child: Text('go to Native'),
+        onPressed: gotoNativePage,
+      ),
     ];
   }
 
@@ -68,6 +73,10 @@ class _SwapColorState extends State<SwapColorPage> {
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
       return Router.getPage(BorgRouters.SwapColorPage,{});
     }));
+  }
+
+  gotoNativePage(){
+    FlutterBoost.singleton.open('borg://secondPage');
   }
 }
 
