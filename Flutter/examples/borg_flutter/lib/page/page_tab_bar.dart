@@ -12,19 +12,27 @@ class TabBarPage extends StatefulWidget {
 }
 
 class _TabBarState extends State<TabBarPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin,WidgetsBindingObserver {
   TabController controller;
 
   @override
   void initState() {
     super.initState();
     controller = TabController(length: 3, vsync: this);
+    WidgetsBinding.instance.addObserver(this);
+
+    controller.addListener((){
+      if (controller.index.toDouble() == controller.animation.value){
+        print('-------------------page change ${controller.index}');
+      }
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
     controller.dispose();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override
@@ -32,7 +40,7 @@ class _TabBarState extends State<TabBarPage>
     return new Scaffold(
       body: new TabBarView(
         children: <Widget>[
-          new FirstPage(),
+          new SecondPage(),
           new SecondPage(),
           new ThirdPage(),
         ],
@@ -47,5 +55,11 @@ class _TabBarState extends State<TabBarPage>
         ]),
       ),
     );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    print('-------------TabBarPage didChangeAppLifecycleState:$state');
   }
 }

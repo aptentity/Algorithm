@@ -5,11 +5,18 @@ class SecondPage extends StatefulWidget {
   State<StatefulWidget> createState() => new SecondPageState();
 }
 
-class SecondPageState extends State<SecondPage> {
+class SecondPageState extends State<SecondPage> with WidgetsBindingObserver{
   @override
   void initState() {
     print("SecondPageState");
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override
@@ -23,4 +30,18 @@ class SecondPageState extends State<SecondPage> {
       ),
     );
   }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    print('-------------SecondPageState didChangeAppLifecycleState:$state');
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    print('+++++++++++++SecondPageState deactivate');
+  }
+
+
 }

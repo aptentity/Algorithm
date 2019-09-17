@@ -75,6 +75,12 @@ class _SwapColor2State extends State<SwapColorPage2> {
       widgets.insert(1, widgets.removeAt(0));
     });
   }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    print('------------------deactivate--------------');
+  }
 }
 
 class StatefulColorfulTile extends StatefulWidget {
