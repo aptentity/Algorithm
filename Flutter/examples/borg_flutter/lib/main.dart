@@ -31,6 +31,7 @@ import 'package:fluro/fluro.dart';
 import 'package:borg_flutter/fluro/application.dart';
 import 'package:borg_flutter/fluro/routes.dart';
 import 'package:borg_flutter/page/page_flutter_lifecycle.dart';
+import 'package:borg_flutter/widget_demo/page/page_paint_demo.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -189,6 +190,7 @@ var routerName = [
   SwapColorPage.name,
   SwapColorPage2.name,
   FlutterLifeCycle.name,
+  SignatureDemoPage.name,
 ];
 
 Map<String,WidgetBuilder> routers = {
@@ -266,6 +268,9 @@ Map<String,WidgetBuilder> routers = {
   },
   FlutterLifeCycle.routeName:(context){
     return FlutterLifeCycle();
+  },
+  SignatureDemoPage.routeName:(context){
+    return SignatureDemoPage();
   },
 };
 
