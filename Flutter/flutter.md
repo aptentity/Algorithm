@@ -153,6 +153,24 @@ Widget build(BuildContext context) {
 
 # 绘制
 
+Widget：StatelessWidget、StatefulWidget、ProxyWidget、ParentDataWidget、InheritedWidget、RenderObjectWidget、LeafRenderObjectWidget、SingleChildRenderObjectWidget、MultiChildRenderObjectWidget
+
+Element：ComponentElement、StatelessElement、StatefulElement、ProxyElement、ParentDataElement、RenderObjectElement、RootRenderObjectElement、LeafRenderObjectElement、SingleChildRenderObjectElement、MultiChildRenderObjectElement
+
+
+
+RenderObjectToWidgetAdapter：RenderObjectWidget
+
+`Widget`是用来描述对应的`Element`的描述或配置。`Element`组成了element tree，`Element`的主要功能就是维护这棵树，节点的增加，删除，更新，树的遍历都在这里完成。`Element`都是从`Widget`中生成的。每个`Widget`都会对应一个`Element`。但是并非每个`Widget`/`Element`会对应一个`RenderObject`。只有这个`Widget`继承自`RenderObjectWidget`的时候才会有对应的`RenderObject`。
+
+- `Widget`是对`Element`的配置或描述。Flutter app开发者主要的工作都是在和`Widget`打交道。我们不需要关心树的维护更新，只需要专注于对`Widget`状态的维护就可以了，大大减轻了开发者的负担。
+- `Element`负责维护element tree。`Element`不会去管具体的颜色，字体大小，显示内容等等这些UI的配置或描述，也不会去管布局，绘制这些事，它只管自己的那棵树。`Element`的主要工作都处于渲染流水线的构建（build）阶段。
+- `RenderObject`负责具体布局，绘制这些事情。也就是渲染流水线的布局（layout）和 绘制（paint）阶段。
+
+
+
+
+
 
 
 
