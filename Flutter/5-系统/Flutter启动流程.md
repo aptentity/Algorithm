@@ -1,5 +1,305 @@
 # Native部分
 
+## Android
+
+### FlutterApplication
+
+```
+public class FlutterApplication extends Application {
+    private Activity mCurrentActivity = null;
+
+    public FlutterApplication() {
+    }
+
+    @CallSuper
+    public void onCreate() {
+        super.onCreate();
+        FlutterMain.startInitialization(this);
+    }
+
+    public Activity getCurrentActivity() {
+        return this.mCurrentActivity;
+    }
+
+    public void setCurrentActivity(Activity mCurrentActivity) {
+        this.mCurrentActivity = mCurrentActivity;
+    }
+}
+```
+
+```
+public static void startInitialization(@NonNull Context applicationContext) {
+    if (!isRunningInRobolectricTest) {
+        startInitialization(applicationContext, new FlutterMain.Settings());
+    }
+}
+
+public static void startInitialization(@NonNull Context applicationContext, @NonNull FlutterMain.Settings settings) {
+    if (!isRunningInRobolectricTest) {
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            throw new IllegalStateException("startInitialization must be called on the main thread");
+        } else if (sSettings == null) {
+            sSettings = settings;
+            long initStartTimestampMillis = SystemClock.uptimeMillis();
+            initConfig(applicationContext);
+            initResources(applicationContext);
+            System.loadLibrary("flutter");
+            VsyncWaiter.getInstance((WindowManager)applicationContext.getSystemService("window")).init();
+            long initTimeMillis = SystemClock.uptimeMillis() - initStartTimestampMillis;
+            FlutterJNI.nativeRecordStartTimestamp(initTimeMillis);
+        }
+    }
+}
+```
+
+`startInitialization`只能执行在主线程中，否则会抛出异常。
+
+通过`sSettings`这个变量可以看出，启动的过程中，这个方法将只执行一遍。
+
+`initConfig`初始化一些变量的配置信息（在AndroidManifest.xml中可以通过meta-data方式配置这些变量值）， `System.loadLibrary("flutter")`则完成装载flutter库文件，期间会在c++层完成JNI方法的动态注册。
+
+```
+public static class Settings {
+    private String logTag;
+
+    public Settings() {
+    }
+
+    @Nullable
+    public String getLogTag() {
+        return this.logTag;
+    }
+
+    public void setLogTag(String tag) {
+        this.logTag = tag;
+    }
+}
+```
+
+Settings很简单，只是Log的tag值。
+
+#### initConfig
+
+```
+private static void initConfig(@NonNull Context applicationContext) {
+    Bundle metadata = getApplicationInfo(applicationContext).metaData;
+    if (metadata != null) {
+        sAotSharedLibraryName = metadata.getString(PUBLIC_AOT_SHARED_LIBRARY_NAME, "libapp.so");
+        sFlutterAssetsDir = metadata.getString(PUBLIC_FLUTTER_ASSETS_DIR_KEY, "flutter_assets");
+        sVmSnapshotData = metadata.getString(PUBLIC_VM_SNAPSHOT_DATA_KEY, "vm_snapshot_data");
+        sIsolateSnapshotData = metadata.getString(PUBLIC_ISOLATE_SNAPSHOT_DATA_KEY, "isolate_snapshot_data");
+    }
+}
+```
+
+#### initResources
+
+初始化一些变量的配置信息（在AndroidManifest.xml中可以通过meta-data方式配置这些变量值）
+
+```
+private static void initResources(@NonNull Context applicationContext) {
+    (new ResourceCleaner(applicationContext)).start();
+    String dataDirPath = PathUtils.getDataDirectory(applicationContext);
+    String packageName = applicationContext.getPackageName();
+    PackageManager packageManager = applicationContext.getPackageManager();
+    AssetManager assetManager = applicationContext.getResources().getAssets();
+    sResourceExtractor = new ResourceExtractor(dataDirPath, packageName, packageManager, assetManager);
+    sResourceExtractor.addResource(fromFlutterAssets(sVmSnapshotData)).addResource(fromFlutterAssets(sIsolateSnapshotData)).addResource(fromFlutterAssets("kernel_blob.bin"));
+    sResourceExtractor.start();
+}
+```
+
+`ResourceCleaner`将清理带有指定标识的缓存文件，`ResourceExtractor`将完成asset 目录下flutter相关资源的拷贝，这些资源会在后续flutter engine和DartVM等初始化时使用。
+
+### FlutterActivity
+
+```
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    this.eventDelegate.onCreate(savedInstanceState);
+}
+```
+
+FlutterActivity中执行onCreate，可以看到这里面并没有当前ContentView的设置，那么其内容界面是在哪里设置的呢，我们可以看到第二句this.eventDelegate.onCreate(savedInstanceState);，最终我们发现Activity中显示的view是在代理类中进行初始化的，下面看下代理类FlutterActivityDelegate的执行,
+
+#### FlutterActivityDelegate
+
+```
+public void onCreate(Bundle savedInstanceState) {
+    if (VERSION.SDK_INT >= 21) {
+        Window window = this.activity.getWindow();
+        window.addFlags(-2147483648);
+        window.setStatusBarColor(1073741824);
+        window.getDecorView().setSystemUiVisibility(1280);
+    }
+
+    String[] args = getArgsFromIntent(this.activity.getIntent());
+    FlutterMain.ensureInitializationComplete(this.activity.getApplicationContext(), args);
+    this.flutterView = this.viewFactory.createFlutterView(this.activity);
+    if (this.flutterView == null) {
+        FlutterNativeView nativeView = this.viewFactory.createFlutterNativeView();
+        this.flutterView = new FlutterView(this.activity, (AttributeSet)null, nativeView);
+        this.flutterView.setLayoutParams(matchParent);
+        this.activity.setContentView(this.flutterView);
+        this.launchView = this.createLaunchView();
+        if (this.launchView != null) {
+            this.addLaunchView();
+        }
+    }
+
+    if (!this.loadIntent(this.activity.getIntent())) {
+        String appBundlePath = FlutterMain.findAppBundlePath();
+        if (appBundlePath != null) {
+            this.runBundle(appBundlePath);
+        }
+
+    }
+}
+```
+
+```
+public static void ensureInitializationComplete(@NonNull Context applicationContext, @Nullable String[] args) {
+    if (!isRunningInRobolectricTest) {
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            throw new IllegalStateException("ensureInitializationComplete must be called on the main thread");
+        } else if (sSettings == null) {
+            throw new IllegalStateException("ensureInitializationComplete must be called after startInitialization");
+        } else if (!sInitialized) {
+            try {
+                if (sResourceExtractor != null) {
+                    sResourceExtractor.waitForCompletion();
+                }
+
+                List<String> shellArgs = new ArrayList();
+                shellArgs.add("--icu-symbol-prefix=_binary_icudtl_dat");
+                ApplicationInfo applicationInfo = getApplicationInfo(applicationContext);
+                shellArgs.add("--icu-native-lib-path=" + applicationInfo.nativeLibraryDir + File.separator + "libflutter.so");
+                if (args != null) {
+                    Collections.addAll(shellArgs, args);
+                }
+
+                String kernelPath = null;
+                String appStoragePath = PathUtils.getDataDirectory(applicationContext) + File.separator + sFlutterAssetsDir;
+                kernelPath = appStoragePath + File.separator + "kernel_blob.bin";
+                shellArgs.add("--snapshot-asset-path=" + appStoragePath);
+                shellArgs.add("--vm-snapshot-data=" + sVmSnapshotData);
+                shellArgs.add("--isolate-snapshot-data=" + sIsolateSnapshotData);
+                shellArgs.add("--cache-dir-path=" + PathUtils.getCacheDirectory(applicationContext));
+                if (sSettings.getLogTag() != null) {
+                    shellArgs.add("--log-tag=" + sSettings.getLogTag());
+                }
+
+                appStoragePath = PathUtils.getFilesDir(applicationContext);
+                String engineCachesPath = PathUtils.getCacheDirectory(applicationContext);
+                FlutterJNI.nativeInit(applicationContext, (String[])shellArgs.toArray(new String[0]), kernelPath, appStoragePath, engineCachesPath);
+                sInitialized = true;
+            } catch (Exception var7) {
+                Log.e("FlutterMain", "Flutter initialization failed.", var7);
+                throw new RuntimeException(var7);
+            }
+        }
+    }
+}
+```
+
+它将等待解压任务结束，资源处理完毕，然后拼接参数，完成参数初始化后将执行`nativeInit`方法对c++层初始化。
+
+然后会创建FlutterView对象。
+
+this.flutterView = this.viewFactory.createFlutterView(this.activity);返回null
+
+FlutterNativeView nativeView = this.viewFactory.createFlutterNativeView(); 也是null
+
+this.flutterView = new FlutterView(this.activity, (AttributeSet)null, nativeView); 创建flutterView
+
+```
+public FlutterView(Context context, AttributeSet attrs, FlutterNativeView nativeView) {
+    super(context, attrs);
+    this.nextTextureId = new AtomicLong(0L);
+    this.mIsSoftwareRenderingEnabled = false;
+    this.didRenderFirstFrame = false;
+    this.onAccessibilityChangeListener = new OnAccessibilityChangeListener() {
+        public void onAccessibilityChanged(boolean isAccessibilityEnabled, boolean isTouchExplorationEnabled) {
+            FlutterView.this.resetWillNotDraw(isAccessibilityEnabled, isTouchExplorationEnabled);
+        }
+    };
+    Activity activity = getActivity(this.getContext());
+    if (activity == null) {
+        throw new IllegalArgumentException("Bad context");
+    } else {
+        if (nativeView == null) {
+            this.mNativeView = new FlutterNativeView(activity.getApplicationContext());
+        } else {
+            this.mNativeView = nativeView;
+        }
+
+        this.dartExecutor = this.mNativeView.getDartExecutor();
+        this.flutterRenderer = new FlutterRenderer(this.mNativeView.getFlutterJNI());
+        this.mIsSoftwareRenderingEnabled = FlutterJNI.nativeGetIsSoftwareRenderingEnabled();
+        this.mMetrics = new FlutterView.ViewportMetrics();
+        this.mMetrics.devicePixelRatio = context.getResources().getDisplayMetrics().density;
+        this.setFocusable(true);
+        this.setFocusableInTouchMode(true);
+        this.mNativeView.attachViewAndActivity(this, activity);
+        this.mSurfaceCallback = new Callback() {
+            public void surfaceCreated(SurfaceHolder holder) {
+                FlutterView.this.assertAttached();
+                FlutterView.this.mNativeView.getFlutterJNI().onSurfaceCreated(holder.getSurface());
+            }
+
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                FlutterView.this.assertAttached();
+                FlutterView.this.mNativeView.getFlutterJNI().onSurfaceChanged(width, height);
+            }
+
+            public void surfaceDestroyed(SurfaceHolder holder) {
+                FlutterView.this.assertAttached();
+                FlutterView.this.mNativeView.getFlutterJNI().onSurfaceDestroyed();
+            }
+        };
+        this.getHolder().addCallback(this.mSurfaceCallback);
+        this.mActivityLifecycleListeners = new ArrayList();
+        this.mFirstFrameListeners = new ArrayList();
+        this.navigationChannel = new NavigationChannel(this.dartExecutor);
+        this.keyEventChannel = new KeyEventChannel(this.dartExecutor);
+        this.lifecycleChannel = new LifecycleChannel(this.dartExecutor);
+        this.localizationChannel = new LocalizationChannel(this.dartExecutor);
+        this.platformChannel = new PlatformChannel(this.dartExecutor);
+        this.systemChannel = new SystemChannel(this.dartExecutor);
+        this.settingsChannel = new SettingsChannel(this.dartExecutor);
+        final PlatformPlugin platformPlugin = new PlatformPlugin(activity, this.platformChannel);
+        this.addActivityLifecycleListener(new ActivityLifecycleListener() {
+            public void onPostResume() {
+                platformPlugin.updateSystemUiOverlays();
+            }
+        });
+        this.mImm = (InputMethodManager)this.getContext().getSystemService("input_method");
+        PlatformViewsController platformViewsController = this.mNativeView.getPluginRegistry().getPlatformViewsController();
+        this.mTextInputPlugin = new TextInputPlugin(this, this.dartExecutor, platformViewsController);
+        this.androidKeyProcessor = new AndroidKeyProcessor(this.keyEventChannel, this.mTextInputPlugin);
+        this.androidTouchProcessor = new AndroidTouchProcessor(this.flutterRenderer);
+        this.mNativeView.getPluginRegistry().getPlatformViewsController().attachTextInputPlugin(this.mTextInputPlugin);
+        this.sendLocalesToDart(this.getResources().getConfiguration());
+        this.sendUserPlatformSettingsToDart();
+    }
+}
+```
+
+这个方法中先执行FlutterNativeView对象创建，然后是FlutterJNI对象创建，再通过c++层完成两者的绑定关系。另外activity和flutterView的绑定关系也在这里完成，并会在PlatformViewsController中完成注册方法回调关系。这个方法还包含了界面绘制监听，flutter绘制的关键调用，建立了通讯体系（各类Channel）。在c++层会用到的资源处理对象也是从这里创建的。
+
+```
+public FlutterNativeView(@NonNull Context context, boolean isBackgroundView) {
+    this.mContext = context;
+    this.mPluginRegistry = new FlutterPluginRegistry(this, context);
+    this.mFlutterJNI = new FlutterJNI();
+    this.mFlutterJNI.setRenderSurface(new FlutterNativeView.RenderSurfaceImpl());
+    this.dartExecutor = new DartExecutor(this.mFlutterJNI, context.getAssets());
+    this.mFlutterJNI.addEngineLifecycleListener(new FlutterNativeView.EngineLifecycleListenerImpl());
+    this.attach(this, isBackgroundView);
+    this.assertAttached();
+}
+```
+
 # Flutter部分
 
 最简单的flutter程序
