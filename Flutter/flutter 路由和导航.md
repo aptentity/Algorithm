@@ -532,3 +532,216 @@ class MyApp extends StatelessWidget {
 //replace 将Navigator中的路由替换成一个新路由。
 //replaceRouteBelow 将Navigator中的路由替换成一个新路由，要替换的路由是是传入参数anchorRouter里面的路由。
 ```
+
+# 高级用法
+
+## 1.PushAndRemove
+
+假设有这么一个场景：我们在开发一个商城项目，从选择商品到支付完成会经过主页面，商品列表页，商品详情页，支付页面，支付结果页。这时候来了一个需求，当跳转到支付结果页的时候将之前所有的页面都销毁，只留下主页面。如果是android可能会用到singletask或者自己写一个activity管理器之类的，但是这些实现方式都显得不那么优雅直接，而Flutter给出的跳转方案能完美地解决这类问题。
+
+![img](https://img-blog.csdnimg.cn/20190911113205718.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM4OTQ3MTE=,size_16,color_FFFFFF,t_70)
+
+
+
+下面我们来看一下对于这类场景Flutter地解决方案
+
+1.新建4个页面，Screen1，Screen2，Screen3，Screen4
+2.在MaterialApp中添加这4个页面的路由
+3.使用Navigator.of(context).pushAndRemoveUntil()或者Navigator.of(context).pushNamedAndRemoveUntil()进行跳转
+
+### 1.1 新建页面
+
+```
+class Screen1 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: RaisedButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/screen2');
+        },
+        child: Text(
+          'screen1',
+          style: TextStyle(fontSize: 30),
+        ),
+      ),
+    );
+  }
+}
+```
+
+其它三个页面的样式和Screen1保持一致，点击按钮跳转到下一个页面
+
+### 1.2 在MaterialApp中添加这4个页面的路由
+
+```
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    title: 'Flutter Demo',
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+    ),
+    routes: {
+      '/screen1': (context) => Screen1(),
+      '/screen2': (context) => Screen2(),
+      '/screen3': (context) => Screen3(),
+      '/screen4': (context) => Screen4(),
+    },
+    initialRoute: '/screen1',
+  );
+}
+```
+
+### 1.3 进行跳转操作
+
+本例中我们的跳转顺序是Screen1—>Screen2—>Screen3—>Screen4
+
+当从Screen3跳转到Screen4的时候我们希望将Screen2，Screen3从栈里面移除掉，这样在Screen4点击返回就能直接回到Screen1
+
+使用Navigator.pushAndRemoveUtil()或者Navigator.pushNamedAndRemoveUntil()实现，这个方法有两个必传参数newRoute和predicate，第一个参数表示将要加入栈中的页面，第二个参数表示栈中要保留的页面底线，意思就是在predicate和newRoute之间的页面都会被移除栈
+
+```
+class Screen3 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: RaisedButton(
+        onPressed: () {
+          //跳转到screen4，并且移除所有的页面直到screen1
+//          Navigator.of(context).pushNamedAndRemoveUntil(
+//              '/screen4', ModalRoute.withName('/screen1'));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => Screen4()),
+              ModalRoute.withName('/screen1'));
+ 
+        },
+        child: Text(
+          'screen3',
+          style: TextStyle(fontSize: 30),
+        ),
+      ),
+    );
+  }
+```
+
+![img](https://img-blog.csdnimg.cn/20190911115241687.gif)
+
+## 2.pushReplacement
+
+假设我们在做一个登录功能，在登录成功后需要跳转到一个新的页面并且销毁当前登录页，这时候就可以用pushReplacement来实现，从字面上的意思看push很好理解，把一个新页面压入栈中嘛，replacement到底是替代那个页面呢？答案是当前页，因为被替换的对象是固定的，所以该方法的必传参数只有被push的路由。
+
+```
+
+class Screen3 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: RaisedButton(
+        onPressed: () {
+          //打开Screen4页面，并销毁当前页
+          Navigator.of(context).pushReplacementNamed('/screen4');
+ 
+          //也可以使用以下方式
+         //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>Screen3()));
+        },
+        child: Text(
+          'screen3',
+          style: TextStyle(fontSize: 30),
+        ),
+      ),
+    );
+  }
+```
+
+![img](https://img-blog.csdnimg.cn/20190911134745612.gif)
+
+
+
+## 3.popUntil
+
+这个比较简单，从字面意思上就可以看出是“一直退出直到某一个页面”，来看一下用法吧
+
+```
+class Screen4 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: RaisedButton(
+        onPressed: () {
+          //当前在Screen4页面，点击回到Screen1，连带着Screen2，Screen3也一起退出
+          Navigator.of(context).popUntil(ModalRoute.withName('/screen1'));
+        },
+        child: Text(
+          'screen4',
+          style: TextStyle(fontSize: 30),
+        ),
+      ),
+    );
+  }
+}
+```
+
+![img](https://img-blog.csdnimg.cn/20190911135802181.gif)
+
+## 4.popAndPushNamed
+
+这个方法和pushReplacement很相近，都是开启一个新的页面并且销毁之前的页面，只是在逻辑上的执行顺序不一样，popAndPushNamed是退出当前页面并且将新的页面放到它原来的位置上，所以在视觉效果上是先退出再进入
+
+```
+class Screen2 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      child: RaisedButton(
+        onPressed: () {
+          //点击退出当前页面，并将Screen3压入栈中
+          Navigator.of(context).popAndPushNamed('/screen3');
+        },
+        child: Text(
+          'screen2',
+          style: TextStyle(fontSize: 30),
+        ),
+      ),
+    );
+  }
+```
+
+![img](https://img-blog.csdnimg.cn/20190911140727536.gif)
+
+仔细看动图，Screen2到Screen3的时候是先将Screen2退出再显示Screen3，它不像pushReplacement那样无感知的就把页面给替换了。所以大家根据实际场景选择使用。
+
+备注：以上所有的方法都可以传递相应的参数，涉及到pop的可以加入返回参数，涉及到push的可以添加传递到新页面的参数，这里没有做过多的赘述，大家可以自己尝试一下。
+
+## 5.maybePop和canPop
+
+Navigator.of(context).canPop()返回一个bool值，表示当前页面是否可以退出，那么判断的依据是啥呢？追溯到源码去看
+
+```
+/// Whether the navigator can be popped.
+  ///
+  /// {@macro flutter.widgets.navigator.canPop}
+  ///
+  /// See also:
+  ///
+  ///  * [Route.isFirst], which returns true for routes for which [canPop]
+  ///    returns false.
+  bool canPop() {
+    assert(_history.isNotEmpty);
+    return _history.length > 1 || _history[0].willHandlePopInternally;
+  }
+```
+
+尤其是这句话哦： [Route.isFirst], which returns true for routes for which [canPop]，意思说的很明显了，判断依据就是看当前路由是否处在栈中“最底部”的位置。根据之前的例子，如果我们在Screen1调用canPop肯定返回false，因为它处在“最底部”的位置，而在其它页面调用则返回true
+
+Navigator.of(context).maybePop()是一种很友善的退出方式，如果能退出就退出，不退出拉到。其实这个方法可以理解为
+maybePop() => canPop() == true?pop() : do nothing
+
+所以在首页调用maybePop()是不会退出的，如果在其它页面调用，效果和pop()一样
+
+

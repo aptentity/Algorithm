@@ -32,6 +32,8 @@ import 'package:borg_flutter/fluro/application.dart';
 import 'package:borg_flutter/fluro/routes.dart';
 import 'package:borg_flutter/page/page_flutter_lifecycle.dart';
 import 'package:borg_flutter/widget_demo/page/page_paint_demo.dart';
+import 'package:borg_flutter/router_demo/page/page_multi_router.dart';
+import 'package:borg_flutter/widget_demo/page/page_overlay_demo.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -85,6 +87,10 @@ class MyApp extends StatelessWidget {
         routeObserver, // 路由监听
       ],
       onGenerateRoute: Application.router.generator,
+      builder: (BuildContext context, Widget child){
+        print('-------------------');
+        return Container(child: child,);
+      },
     );
   }
 }
@@ -191,6 +197,8 @@ var routerName = [
   SwapColorPage2.name,
   FlutterLifeCycle.name,
   SignatureDemoPage.name,
+  MultiRouterPage.name,
+  OverlayDemoPage.name,
 ];
 
 Map<String,WidgetBuilder> routers = {
@@ -271,6 +279,12 @@ Map<String,WidgetBuilder> routers = {
   },
   SignatureDemoPage.routeName:(context){
     return SignatureDemoPage();
+  },
+  MultiRouterPage.routeName:(context){
+    return MultiRouterPage();
+  },
+  OverlayDemoPage.routeName:(context){
+    return OverlayDemoPage();
   },
 };
 
