@@ -35,6 +35,7 @@ import 'package:borg_flutter/widget_demo/page/page_paint_demo.dart';
 import 'package:borg_flutter/router_demo/page/page_multi_router.dart';
 import 'package:borg_flutter/widget_demo/page/page_overlay_demo.dart';
 import 'package:borg_flutter/page/page_cache.dart';
+import 'package:borg_flutter/widget_demo/page/page_form_demo.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -89,7 +90,6 @@ class MyApp extends StatelessWidget {
       ],
       onGenerateRoute: Application.router.generator,
       builder: (BuildContext context, Widget child){
-        print('-------------------');
         return Container(child: child,);
       },
     );
@@ -201,6 +201,7 @@ var routerName = [
   MultiRouterPage.name,
   OverlayDemoPage.name,
   CachePage.name,
+  FormDemoPage.name,
 ];
 
 Map<String,WidgetBuilder> routers = {
@@ -290,6 +291,9 @@ Map<String,WidgetBuilder> routers = {
   },
   CachePage.routeName:(context){
     return CachePage();
+  },
+  FormDemoPage.routeName:(context){
+    return FormDemoPage();
   },
 };
 
