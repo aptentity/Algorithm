@@ -34,6 +34,7 @@ import 'package:borg_flutter/page/page_flutter_lifecycle.dart';
 import 'package:borg_flutter/widget_demo/page/page_paint_demo.dart';
 import 'package:borg_flutter/router_demo/page/page_multi_router.dart';
 import 'package:borg_flutter/widget_demo/page/page_overlay_demo.dart';
+import 'package:borg_flutter/page/page_cache.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -199,6 +200,7 @@ var routerName = [
   SignatureDemoPage.name,
   MultiRouterPage.name,
   OverlayDemoPage.name,
+  CachePage.name,
 ];
 
 Map<String,WidgetBuilder> routers = {
@@ -285,6 +287,9 @@ Map<String,WidgetBuilder> routers = {
   },
   OverlayDemoPage.routeName:(context){
     return OverlayDemoPage();
+  },
+  CachePage.routeName:(context){
+    return CachePage();
   },
 };
 

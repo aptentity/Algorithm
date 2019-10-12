@@ -16,6 +16,7 @@ class ButtonsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("ButtonsPage!!!!!!!!!!!!!!!");
     return Scaffold(
       appBar: AppBar(
         title: Text("Buttons"),
@@ -56,6 +57,7 @@ class ButtonsPage extends StatelessWidget {
             painter: MyCustomPainter(dataList),
           ),
           Image.asset("assets/images/status_finish.png"),
+          TestWidget(),
         ],
       ),
     );
@@ -63,5 +65,61 @@ class ButtonsPage extends StatelessWidget {
 
   void clickButton() {
     print("click button");
+  }
+}
+
+class TestWidget extends StatefulWidget{
+  @override
+  TestState createState() => TestState();
+}
+
+class TestState extends State<StatefulWidget>{
+  int count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    print("TestState build!!!!!!!!!!!!!!!");
+    return Column(
+      children: <Widget>[
+        Text(count.toString()),
+        MyTest(count.toString()),
+        MyButton(clickButton),
+      ],
+    );
+  }
+
+  void clickButton() {
+    print("clickButton!!!!!!!!!!!!!!!");
+    setState(() {
+      count ++;
+    });
+  }
+
+}
+
+class MyButton extends StatelessWidget{
+  final VoidCallback onPressed;
+  const MyButton(this.onPressed);
+  @override
+  Widget build(BuildContext context) {
+    print("MyButton build!!!!!!!!!!!!!!! ");
+    return RaisedButton(child: Text('Add'),onPressed: ()=>clickButton(),);
+  }
+
+  void clickButton() {
+    print("MyButton clickButton!!!!!!!!!!!!!!!");
+    onPressed();
+  }
+}
+
+class MyTest extends StatelessWidget{
+  final String title;
+
+  const MyTest(this.title);
+
+  @override
+  Widget build(BuildContext context) {
+    print("MyTest build!!!!!!!!!!!!!!!");
+    return Text(title);
   }
 }
