@@ -49,6 +49,7 @@ class _FormDemoState extends State<DkFormDemoPage> {
               children: <Widget>[
                 DkTextFormField(
                   attribute: 'name',
+                  initialValue: 'gulliver',
                   decoration: InputDecoration(
                     labelText: 'Your Name',
                   ),
@@ -58,6 +59,7 @@ class _FormDemoState extends State<DkFormDemoPage> {
                 ),
                 DkTextFormField(
                   attribute: 'pwd',
+                  initialValue: '123456',
                   decoration: InputDecoration(
                     labelText: 'Password',
                   ),
@@ -72,11 +74,11 @@ class _FormDemoState extends State<DkFormDemoPage> {
                 Container(
                   child: DkTextFormField(
                     attribute: 'context',
+                    initialValue: 'danke',
                     autovalidate: true,
                     decoration: InputDecoration(
                       labelText: 'Common',
                     ),
-                    obscureText: true,
                     validator: (val) {
                       return val.length < 4 ? "密码长度错误" : null;
                     },
@@ -86,6 +88,52 @@ class _FormDemoState extends State<DkFormDemoPage> {
                     onFieldSubmitted: (val){
                       print(val);
                     },
+                  ),
+                ),
+                DkFormFieldGroup(
+                  attribute: 'group',
+                  child: Column(
+                    children: <Widget>[
+                      DkTextFormField(
+                        attribute: 'groupname',
+                        initialValue: 'gulliver-group',
+                        decoration: InputDecoration(
+                          labelText: 'group Your Name',
+                        ),
+                        onSaved: (val) {
+                          _name = val;
+                        },
+                      ),
+                      Container(
+                        child:DkTextFormField(
+                          attribute: 'grouppwd',
+                          initialValue: '987654',
+                          decoration: InputDecoration(
+                            labelText: 'group password',
+                          ),
+                          onSaved: (val) {
+                            _name = val;
+                          },
+                        ),
+                      ),
+                      DkFormFieldGroup(
+                        attribute: 'favarite',
+                        child: Column(
+                          children: <Widget>[
+                            DkTextFormField(
+                              attribute: 'favarite name',
+                              initialValue: '地心历险记',
+                              decoration: InputDecoration(
+                                labelText: 'favarite name',
+                              ),
+                              onSaved: (val) {
+                                _name = val;
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],

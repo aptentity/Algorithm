@@ -177,6 +177,7 @@ class DkFormField<T> extends StatefulWidget {
 class DkFormFieldState<T> extends DkFormFieldBaseState<DkFormField<T>> {
   final GlobalKey<DkFormFieldState> _fieldKey = GlobalKey<DkFormFieldState>();
   DkFormState _formState;
+  DkFormFieldGroupState _formFieldGroupState;
   T _value;
   String _errorText;
 
@@ -189,7 +190,11 @@ class DkFormFieldState<T> extends DkFormFieldBaseState<DkFormField<T>> {
     if (widget.onSaved != null) {
       widget.onSaved(value);
     }
-    _formState?.setAttributeValue(widget.attribute, value);
+    if (_formFieldGroupState != null) {
+      _formFieldGroupState.setAttributeValue(widget.attribute, value);
+    } else {
+      _formState?.setAttributeValue(widget.attribute, value);
+    }
   }
 
   @override
@@ -236,6 +241,12 @@ class DkFormFieldState<T> extends DkFormFieldBaseState<DkFormField<T>> {
     super.didChangeDependencies();
     _formState = DkForm.of(context);
     _formState?.registerFieldKey(widget.attribute, _fieldKey);
+    _formFieldGroupState = DkFormFieldGroup.of(context);
+    if (_formFieldGroupState == null) {
+      print('!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    } else {
+      print('@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+    }
   }
 
   @override
@@ -246,7 +257,11 @@ class DkFormFieldState<T> extends DkFormFieldBaseState<DkFormField<T>> {
 
   @override
   void deactivate() {
-    DkForm.of(context)?._unregister(this);
+    if (_formFieldGroupState != null) {
+      _formFieldGroupState._unregister(this);
+    } else {
+      _formState?._unregister(this);
+    }
     _formState?.unregisterFieldKey(widget.attribute);
     super.deactivate();
   }
@@ -256,7 +271,11 @@ class DkFormFieldState<T> extends DkFormFieldBaseState<DkFormField<T>> {
     if (widget.autovalidate && widget.enabled) {
       _validate();
     }
-    DkForm.of(context)?._register(this);
+    if (_formFieldGroupState != null) {
+      _formFieldGroupState._register(this);
+    } else {
+      _formState?._register(this);
+    }
     return widget.builder(this);
   }
 }
@@ -272,7 +291,8 @@ class DkFormFieldGroup extends StatefulWidget {
   final VoidCallback onChanged;
   final String attribute;
 
-  const DkFormFieldGroup({Key key, @required this.child, this.onChanged,@required this.attribute})
+  const DkFormFieldGroup(
+      {Key key, @required this.child, this.onChanged, @required this.attribute})
       : assert(child != null),
         super(key: key);
   @override
@@ -289,9 +309,27 @@ class DkFormFieldGroupState extends DkFormFieldBaseState<DkFormFieldGroup> {
   Map<String, dynamic> get value => _value;
   final Set<DkFormFieldBaseState<dynamic>> _fields =
       <DkFormFieldBaseState<dynamic>>{};
+  DkFormState _formState;
+  DkFormFieldGroupState _dkFormFieldGroupState;
+
+  @override
+  void initState() {
+    _value = {};
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _formState = DkForm.of(context);
+    _dkFormFieldGroupState = DkFormFieldGroup.of(context);
+  }
 
   @override
   Widget build(BuildContext context) {
+    _dkFormFieldGroupState != null
+        ? _dkFormFieldGroupState._register(this)
+        : _formState?._register(this);
     return Container(
       child: widget.child,
     );
@@ -304,20 +342,45 @@ class DkFormFieldGroupState extends DkFormFieldBaseState<DkFormFieldGroup> {
       print("DkFormFieldBaseState save $field");
       field.save();
     }
+    _dkFormFieldGroupState != null
+        ? _dkFormFieldGroupState.setAttributeValue(widget.attribute, value)
+        : _formState?.setAttributeValue(widget.attribute, value);
   }
 
-  @override
   void reset() {
-    // TODO: implement reset
+    for (DkFormFieldBaseState<dynamic> field in _fields) {
+      field.reset();
+    }
   }
 
-  @override
   bool validate() {
-    // TODO: implement validate
-    return null;
+    return _validate();
+  }
+
+  bool _validate() {
+    bool hasError = false;
+    for (DkFormFieldBaseState<dynamic> field in _fields)
+      hasError = !field.validate() || hasError;
+    return !hasError;
+  }
+
+  void _register(DkFormFieldBaseState<dynamic> field) {
+    print('DkFormFieldGroupState _register $field');
+    _fields.add(field);
+  }
+
+  void _unregister(DkFormFieldBaseState<dynamic> field) {
+    print('DkFormFieldGroupState _unregister $field');
+    _fields.remove(field);
+  }
+
+  void setAttributeValue(String attribute, dynamic value) {
+    setState(() {
+      _value[attribute] = value;
+    });
   }
 }
 
 class DkFormFieldList {}
 
-class DkFormFieldItem {}
+class DkFormFieldListItem {}
