@@ -36,6 +36,7 @@ import 'package:borg_flutter/router_demo/page/page_multi_router.dart';
 import 'package:borg_flutter/widget_demo/page/page_overlay_demo.dart';
 import 'package:borg_flutter/page/page_cache.dart';
 import 'package:borg_flutter/widget_demo/page/page_form_demo.dart';
+import 'package:borg_flutter/widget_demo/page/page_dkform_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_inherited_widget_demo.dart';
 
 void main() async{
@@ -203,6 +204,7 @@ var routerName = [
   OverlayDemoPage.name,
   CachePage.name,
   FormDemoPage.name,
+  DkFormDemoPage.name,
   InheritedPage.name,
 ];
 
@@ -296,6 +298,9 @@ Map<String,WidgetBuilder> routers = {
   },
   FormDemoPage.routeName:(context){
     return FormDemoPage();
+  },
+  DkFormDemoPage.routeName:(context){
+    return DkFormDemoPage();
   },
   InheritedPage.routeName:(context){
     return InheritedPage();

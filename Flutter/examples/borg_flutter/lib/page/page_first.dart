@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:borg_flutter/page/page_second.dart';
 import 'package:borg_flutter/page/page_third.dart';
-import 'package:borg_flutter/widget/DKUnderlineTabIndicator.dart';
+import 'package:borg_flutter/widget/underline_tab_indicator.dart';
 
 class FirstPage extends StatefulWidget {
   @override
