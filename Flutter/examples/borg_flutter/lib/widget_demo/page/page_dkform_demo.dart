@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:borg_flutter/widget/dk_form.dart';
 import 'package:borg_flutter/widget/dk_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,7 @@ class _FormDemoState extends State<DkFormDemoPage> {
       print(_password);
       print(_common);
       print(_form.value);
+      print(json.encode(_form.value));
     }
   }
 
@@ -157,63 +160,72 @@ class _FormDemoState extends State<DkFormDemoPage> {
                           ],
                         ),
                       ),
-                      DkFormFieldList(
-                        attribute: 'movie',
-                        child: Column(
-                          children: <Widget>[
-                            DkFormFieldListItem(
-                              child: Column(
-                                children: <Widget>[
-                                  DkTextFormField(
-                                    attribute: 'name',
-                                    initialValue: '双面杀手',
-                                    decoration: InputDecoration(
-                                      labelText: '电影名称',
-                                    ),
-                                    onSaved: (val) {
-                                      _name = val;
-                                    },
-                                  ),
-                                  DkTextFormField(
-                                    attribute: 'nation',
-                                    initialValue: '美国',
-                                    decoration: InputDecoration(
-                                      labelText: '地区',
-                                    ),
-                                    onSaved: (val) {
-                                      _name = val;
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            DkFormFieldListItem(
-                              child: Column(
-                                children: <Widget>[
-                                  DkTextFormField(
-                                    attribute: 'name',
-                                    initialValue: '我的国',
-                                    decoration: InputDecoration(
-                                      labelText: '电影名称',
-                                    ),
-                                    onSaved: (val) {
-                                      _name = val;
-                                    },
-                                  ),
-                                  DkTextFormField(
-                                    attribute: 'nation',
-                                    initialValue: '中国',
-                                    decoration: InputDecoration(
-                                      labelText: '地区',
-                                    ),
-                                    onSaved: (val) {
-                                      _name = val;
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                      MovieForm(),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class MovieForm extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return DkFormFieldList(
+      attribute: 'movie',
+      child: Column(
+        children: <Widget>[
+          DkFormFieldListItem(
+            child: Column(
+              children: <Widget>[
+                DkTextFormField(
+                  attribute: 'name',
+                  initialValue: '双面杀手',
+                  decoration: InputDecoration(
+                    labelText: '电影名称',
+                  ),
+                ),
+                DkTextFormField(
+                  attribute: 'nation',
+                  initialValue: '美国',
+                  decoration: InputDecoration(
+                    labelText: '地区',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          DkFormFieldListItem(
+            child: Column(
+              children: <Widget>[
+                DkTextFormField(
+                  attribute: 'name',
+                  initialValue: '我的国',
+                  decoration: InputDecoration(
+                    labelText: '电影名称',
+                  ),
+                ),
+                DkTextFormField(
+                  attribute: 'nation',
+                  initialValue: '中国',
+                  decoration: InputDecoration(
+                    labelText: '地区',
+                  ),
+                ),
+                DkFormFieldGroup(
+                  attribute: 'favarite2',
+                  child: Column(
+                    children: <Widget>[
+                      DkTextFormField(
+                        attribute: 'favarite name',
+                        initialValue: '地心历险记2',
+                        decoration: InputDecoration(
+                          labelText: 'favarite name',
                         ),
                       ),
                     ],
@@ -222,7 +234,7 @@ class _FormDemoState extends State<DkFormDemoPage> {
               ],
             ),
           ),
-        ),
+        ],
       ),
     );
   }

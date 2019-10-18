@@ -25,7 +25,7 @@ class DkForm extends StatefulWidget {
   }
 }
 
-class DkFormState extends DkFormFieldBaseState<DkForm>
+class DkFormState extends DkFormFieldParentBaseState<DkForm>
     with DkFormRootState<DkForm> {
   int _generation = 0;
 
@@ -160,7 +160,7 @@ class DkFormFieldState<T> extends DkFormFieldBaseState<DkFormField<T>>
     _formState?._fieldDidChange();
   }
 
-  T setValue(T value) {
+  void setValue(T value) {
     _value = value;
   }
 
@@ -186,11 +186,23 @@ class DkFormFieldState<T> extends DkFormFieldBaseState<DkFormField<T>>
   }
 }
 
-abstract class DkFormFieldBaseState<T extends StatefulWidget> extends State<T> {
+abstract class DkFormFieldParentBaseState<T extends StatefulWidget> extends DkFormFieldBaseState<T> {
+  void _register(DkFormFieldBaseState<dynamic> field);
+  void _unregister(DkFormFieldBaseState<dynamic> field);
+  void setAttributeValue(String attribute, dynamic value);
+
+  static DkFormFieldParentBaseState of(BuildContext context) {
+    return context
+        .ancestorStateOfType(const TypeMatcher<DkFormFieldParentBaseState>());
+  }
+}
+
+abstract class DkFormFieldBaseState<T extends StatefulWidget> extends State<T>{
   void save();
   void reset();
   bool validate();
 }
+
 
 class DkFormFieldGroup extends StatefulWidget {
   final Widget child;
@@ -209,7 +221,7 @@ class DkFormFieldGroup extends StatefulWidget {
   }
 }
 
-class DkFormFieldGroupState extends DkFormFieldBaseState<DkFormFieldGroup>
+class DkFormFieldGroupState extends DkFormFieldParentBaseState<DkFormFieldGroup>
     with DkFormRootState, DkFormLeafState {
   @override
   Widget build(BuildContext context) {
@@ -244,7 +256,7 @@ class DkFormFieldList extends StatefulWidget {
   }
 }
 
-class DkFormFieldListState extends DkFormFieldBaseState<DkFormFieldList>
+class DkFormFieldListState extends DkFormFieldParentBaseState<DkFormFieldList>
     with DkFormRootState, DkFormLeafState {
   List<dynamic> _array;
 
@@ -291,7 +303,7 @@ class DkFormFieldListItem extends StatefulWidget {
   }
 }
 
-class DkFormFieldListItemState extends DkFormFieldBaseState<DkFormFieldListItem>
+class DkFormFieldListItemState extends DkFormFieldParentBaseState<DkFormFieldListItem>
     with DkFormRootState{
   DkFormFieldListState _formFieldListState;
 
@@ -323,7 +335,7 @@ class DkFormFieldListItemState extends DkFormFieldBaseState<DkFormFieldListItem>
 }
 
 
-mixin DkFormRootState<T extends StatefulWidget> on DkFormFieldBaseState<T> {
+mixin DkFormRootState<T extends StatefulWidget> on DkFormFieldParentBaseState<T> {
   final Set<DkFormFieldBaseState<dynamic>> _fields =
       <DkFormFieldBaseState<dynamic>>{};
   Map<String, dynamic> _value;
@@ -385,48 +397,28 @@ mixin DkFormRootState<T extends StatefulWidget> on DkFormFieldBaseState<T> {
 
 mixin DkFormLeafState<T extends StatefulWidget> on DkFormFieldBaseState<T> {
   DkFormState _formState;
-  DkFormFieldGroupState _formFieldGroupState;
-  DkFormFieldListItemState _formFieldListItemState;
+  DkFormFieldParentBaseState _formFieldBaseState;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _formState = DkForm.of(context);
-    _formFieldGroupState = DkFormFieldGroup.of(context);
-    _formFieldListItemState = DkFormFieldListItem.of(context);
+    _formFieldBaseState = DkFormFieldParentBaseState.of(context);
   }
 
   @override
   void deactivate() {
-    if(_formFieldListItemState != null){
-      _formFieldListItemState._unregister(this);
-    }else if (_formFieldGroupState != null) {
-      _formFieldGroupState._unregister(this);
-    } else {
-      _formState?._unregister(this);
-    }
+    _formFieldBaseState?._unregister(this);
     super.deactivate();
   }
 
   @override
   Widget build(BuildContext context) {
-    if(_formFieldListItemState != null){
-      _formFieldListItemState._register(this);
-    }else if (_formFieldGroupState != null) {
-      _formFieldGroupState._register(this);
-    } else {
-      _formState?._register(this);
-    }
+    _formFieldBaseState?._register(this);
     return null;
   }
 
   void saveValue(String attribute, dynamic value) {
-    if(_formFieldListItemState != null){
-      _formFieldListItemState.setAttributeValue(attribute, value);
-    }else if (_formFieldGroupState != null) {
-      _formFieldGroupState.setAttributeValue(attribute, value);
-    } else {
-      _formState?.setAttributeValue(attribute, value);
-    }
+    _formFieldBaseState?.setAttributeValue(attribute, value);
   }
 }
