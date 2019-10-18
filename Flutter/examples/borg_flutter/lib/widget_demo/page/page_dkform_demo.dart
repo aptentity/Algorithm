@@ -29,6 +29,13 @@ class _FormDemoState extends State<DkFormDemoPage> {
     }
   }
 
+  void _forReset() {
+    var _form = _formKey.currentState;
+    if (_form.validate()) {
+      _form.reset();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,15 +44,29 @@ class _FormDemoState extends State<DkFormDemoPage> {
         appBar: AppBar(
           title: Text('Flutter Form'),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _forSubmitted,
-          child:  Text('提交'),
+        floatingActionButton: Container(
+          child: Column(
+            children: <Widget>[
+              RaisedButton(
+                onPressed: _forSubmitted,
+                child: Text('提交'),
+              ),
+              RaisedButton(
+                onPressed: _forSubmitted,
+                child: Text('提交'),
+              ),
+              RaisedButton(
+                onPressed: _forReset,
+                child: Text('重置'),
+              ),
+            ],
+          ),
         ),
-        body:  Container(
+        body: Container(
           padding: const EdgeInsets.all(16.0),
           child: DkForm(
             key: _formKey,
-            child:  Column(
+            child: Column(
               children: <Widget>[
                 DkTextFormField(
                   attribute: 'name',
@@ -85,7 +106,7 @@ class _FormDemoState extends State<DkFormDemoPage> {
                     onSaved: (val) {
                       _common = val;
                     },
-                    onFieldSubmitted: (val){
+                    onFieldSubmitted: (val) {
                       print(val);
                     },
                   ),
@@ -105,12 +126,15 @@ class _FormDemoState extends State<DkFormDemoPage> {
                         },
                       ),
                       Container(
-                        child:DkTextFormField(
+                        child: DkTextFormField(
                           attribute: 'grouppwd',
                           initialValue: '987654',
                           decoration: InputDecoration(
                             labelText: 'group password',
                           ),
+                          validator: (val) {
+                            return val.length < 4 ? "密码长度错误" : null;
+                          },
                           onSaved: (val) {
                             _name = val;
                           },
@@ -129,6 +153,65 @@ class _FormDemoState extends State<DkFormDemoPage> {
                               onSaved: (val) {
                                 _name = val;
                               },
+                            ),
+                          ],
+                        ),
+                      ),
+                      DkFormFieldList(
+                        attribute: 'movie',
+                        child: Column(
+                          children: <Widget>[
+                            DkFormFieldListItem(
+                              child: Column(
+                                children: <Widget>[
+                                  DkTextFormField(
+                                    attribute: 'name',
+                                    initialValue: '双面杀手',
+                                    decoration: InputDecoration(
+                                      labelText: '电影名称',
+                                    ),
+                                    onSaved: (val) {
+                                      _name = val;
+                                    },
+                                  ),
+                                  DkTextFormField(
+                                    attribute: 'nation',
+                                    initialValue: '美国',
+                                    decoration: InputDecoration(
+                                      labelText: '地区',
+                                    ),
+                                    onSaved: (val) {
+                                      _name = val;
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                            DkFormFieldListItem(
+                              child: Column(
+                                children: <Widget>[
+                                  DkTextFormField(
+                                    attribute: 'name',
+                                    initialValue: '我的国',
+                                    decoration: InputDecoration(
+                                      labelText: '电影名称',
+                                    ),
+                                    onSaved: (val) {
+                                      _name = val;
+                                    },
+                                  ),
+                                  DkTextFormField(
+                                    attribute: 'nation',
+                                    initialValue: '中国',
+                                    decoration: InputDecoration(
+                                      labelText: '地区',
+                                    ),
+                                    onSaved: (val) {
+                                      _name = val;
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),

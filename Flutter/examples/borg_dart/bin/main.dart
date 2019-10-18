@@ -1,19 +1,46 @@
-import 'package:borg_dart/borg_dart.dart' as borg_dart;
+mixin TestMixin on BaseClass {
+  void init() {
+    print('TestMixin init start');
+    super.init();
+    print('TestMixin init end');
+  }
+}
 
-main(List<String> arguments) {
-  print('Hello world: ${borg_dart.calculate()}!');
+mixin TestMixin2 on BaseClass {
+  void init() {
+    print('TestMixin2 init start');
+    super.init();
+    print('TestMixin2 init end');
+  }
+}
 
-  var lists = {
-    ["abc","1111","---"],
-    ["bcd","2222","==="],
-  };
+class BaseClass {
+  void init() {
+    print('Base init');
+  }
+  BaseClass() {
+    init();
+  }
+}
 
+class TestClass extends BaseClass with TestMixin, TestMixin2 {
 
-  var t = lists.map((e){
-    print(e);
-    print(e[1]);
-    return e;
-  }).toList();
+  @override
+  void init() {
+    print('TestClass init start');
+    super.init();
+    print('TestClass init end');
 
-  print(t);
+  }
+}
+
+void main() {
+  TestClass();
+  /// TestClass init start
+  /// TestMixin2 init start
+  /// TestMixin init start
+  /// Base init
+  /// TestMixin init end
+  /// TestMixin2 init end
+  /// TestClass init end
 }
