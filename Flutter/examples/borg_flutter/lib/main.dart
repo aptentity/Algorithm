@@ -38,6 +38,7 @@ import 'package:borg_flutter/page/page_cache.dart';
 import 'package:borg_flutter/widget_demo/page/page_form_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_dkform_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_inherited_widget_demo.dart';
+import 'package:borg_flutter/widget_demo/page/page_textfield_demo.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -174,6 +175,7 @@ class GLObserver extends NavigatorObserver {
 
 
 var routerName = [
+  TextFieldDemoPage.name,
   "Popup Menu Button",
   "Buttons",
   "Dropdown Button",
@@ -209,6 +211,9 @@ var routerName = [
 ];
 
 Map<String,WidgetBuilder> routers = {
+  TextFieldDemoPage.routeName:(context){
+    return TextFieldDemoPage();
+  },
   "widget/popup_menu_button": (context) {
     return PopupMenuPage();
   },

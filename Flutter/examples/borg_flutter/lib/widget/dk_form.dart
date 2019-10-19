@@ -117,6 +117,8 @@ class DkFormField<T> extends StatefulWidget {
   DkFormFieldState<T> createState() => DkFormFieldState<T>();
 }
 
+///
+/// didChange、setValue用于负值
 class DkFormFieldState<T> extends DkFormFieldBaseState<DkFormField<T>>
     with DkFormLeafState {
   T _value;
