@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+///自定义表单
+///根节点只能是DkForm，且DkForm只能是根节点
+///
 class DkForm extends StatefulWidget {
   final Widget child;
   final bool autovalidate;
@@ -26,7 +29,7 @@ class DkForm extends StatefulWidget {
 }
 
 class DkFormState extends DkFormFieldParentBaseState<DkForm>
-    with DkFormRootState<DkForm> {
+    with DkFormParentState<DkForm> {
   int _generation = 0;
 
   @override
@@ -186,24 +189,7 @@ class DkFormFieldState<T> extends DkFormFieldBaseState<DkFormField<T>>
   }
 }
 
-abstract class DkFormFieldParentBaseState<T extends StatefulWidget> extends DkFormFieldBaseState<T> {
-  void _register(DkFormFieldBaseState<dynamic> field);
-  void _unregister(DkFormFieldBaseState<dynamic> field);
-  void setAttributeValue(String attribute, dynamic value);
-
-  static DkFormFieldParentBaseState of(BuildContext context) {
-    return context
-        .ancestorStateOfType(const TypeMatcher<DkFormFieldParentBaseState>());
-  }
-}
-
-abstract class DkFormFieldBaseState<T extends StatefulWidget> extends State<T>{
-  void save();
-  void reset();
-  bool validate();
-}
-
-
+///表单组widget
 class DkFormFieldGroup extends StatefulWidget {
   final Widget child;
   final String attribute;
@@ -221,8 +207,11 @@ class DkFormFieldGroup extends StatefulWidget {
   }
 }
 
+///表单组节点
+///
+/// value：{"favorite":{"favorite name":"地心历险记2"}}
 class DkFormFieldGroupState extends DkFormFieldParentBaseState<DkFormFieldGroup>
-    with DkFormRootState, DkFormLeafState {
+    with DkFormParentState, DkFormLeafState {
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -238,6 +227,7 @@ class DkFormFieldGroupState extends DkFormFieldParentBaseState<DkFormFieldGroup>
   }
 }
 
+///数组根节点widget
 class DkFormFieldList extends StatefulWidget {
   final Widget child;
   final String attribute;
@@ -250,19 +240,23 @@ class DkFormFieldList extends StatefulWidget {
   @override
   DkFormFieldListState createState() => DkFormFieldListState();
 
-  static DkFormFieldListState of(BuildContext context){
+  static DkFormFieldListState of(BuildContext context) {
     return context
         .ancestorStateOfType(const TypeMatcher<DkFormFieldListState>());
   }
 }
 
+///数组根节点
+///
+/// 提供saveArray方法
+/// value:{"movie":[{"name":"双面杀手","nation":"美国"},{"name":"我的国","nation":"中国"}]}
 class DkFormFieldListState extends DkFormFieldParentBaseState<DkFormFieldList>
-    with DkFormRootState, DkFormLeafState {
+    with DkFormParentState, DkFormLeafState {
   List<dynamic> _array;
 
   @override
   void initState() {
-    _array =[];
+    _array = [];
     super.initState();
   }
 
@@ -281,31 +275,40 @@ class DkFormFieldListState extends DkFormFieldParentBaseState<DkFormFieldList>
     saveValue(widget.attribute, _array);
   }
 
-  void saveArray(dynamic data){
+  void saveArray(dynamic data) {
     _array.add(data);
   }
 }
 
+///数组节点包装widget，父widget需要是DkFormFieldList
+///
 class DkFormFieldListItem extends StatefulWidget {
   final Widget child;
 
-  const DkFormFieldListItem(
-      {Key key, @required this.child})
+  const DkFormFieldListItem({Key key, @required this.child})
       : assert(child != null),
         super(key: key);
 
   @override
   DkFormFieldListItemState createState() => DkFormFieldListItemState();
-
-  static DkFormFieldListItemState of(BuildContext context){
-    return context
-        .ancestorStateOfType(const TypeMatcher<DkFormFieldListItemState>());
-  }
 }
 
-class DkFormFieldListItemState extends DkFormFieldParentBaseState<DkFormFieldListItem>
-    with DkFormRootState{
+///数组根节点
+///
+///需要寻找FormFieldList节点
+///save时调用FormFieldList的saveArray
+class DkFormFieldListItemState
+    extends DkFormFieldParentBaseState<DkFormFieldListItem>
+    with DkFormParentState {
   DkFormFieldListState _formFieldListState;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _formFieldListState = DkFormFieldList.of(context);
+
+    assert(_formFieldListState != null);
+  }
 
   @override
   void deactivate() {
@@ -322,32 +325,29 @@ class DkFormFieldListItemState extends DkFormFieldParentBaseState<DkFormFieldLis
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _formFieldListState = DkFormFieldList.of(context);
-  }
-
-  @override
   void save() {
     super.save();
     _formFieldListState.saveArray(value);
   }
 }
 
-
-mixin DkFormRootState<T extends StatefulWidget> on DkFormFieldParentBaseState<T> {
+///表单的父节点
+///
+///实现_register，_unregister，setAttributeValue，save，reset，validate
+mixin DkFormParentState<T extends StatefulWidget>
+    on DkFormFieldParentBaseState<T> {
   final Set<DkFormFieldBaseState<dynamic>> _fields =
       <DkFormFieldBaseState<dynamic>>{};
   Map<String, dynamic> _value;
   Map<String, dynamic> get value => _value;
 
   void _register(DkFormFieldBaseState<dynamic> field) {
-    print('DkFormRootState _register $field');
+    print('DkFormParentState _register $field');
     _fields.add(field);
   }
 
   void _unregister(DkFormFieldBaseState<dynamic> field) {
-    print('DkFormRootState _unregister $field');
+    print('DkFormParentState _unregister $field');
     _fields.remove(field);
   }
 
@@ -363,13 +363,8 @@ mixin DkFormRootState<T extends StatefulWidget> on DkFormFieldParentBaseState<T>
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   void save() {
-    print('DkFormRootState save');
+    print('DkFormParentState save');
     for (DkFormFieldBaseState<dynamic> field in _fields) {
       print("DkFormFieldBaseState save $field");
       field.save();
@@ -395,6 +390,11 @@ mixin DkFormRootState<T extends StatefulWidget> on DkFormFieldParentBaseState<T>
   }
 }
 
+///表单的叶子节点
+///
+///注册到上一级的DkFormFieldParentBaseState
+///取到DkFormState
+///saveValue将k-v保存到上一级DkFormFieldParentBaseState
 mixin DkFormLeafState<T extends StatefulWidget> on DkFormFieldBaseState<T> {
   DkFormState _formState;
   DkFormFieldParentBaseState _formFieldBaseState;
@@ -404,6 +404,9 @@ mixin DkFormLeafState<T extends StatefulWidget> on DkFormFieldBaseState<T> {
     super.didChangeDependencies();
     _formState = DkForm.of(context);
     _formFieldBaseState = DkFormFieldParentBaseState.of(context);
+
+    assert(_formState != null);
+    assert(_formFieldBaseState != null);
   }
 
   @override
@@ -421,4 +424,33 @@ mixin DkFormLeafState<T extends StatefulWidget> on DkFormFieldBaseState<T> {
   void saveValue(String attribute, dynamic value) {
     _formFieldBaseState?.setAttributeValue(attribute, value);
   }
+}
+
+///表单父节点抽象类
+///
+///_register：注册为该节点的子节点
+///_unregister：删除该节点的子节点
+///setAttributeValue：添加k-v到节点中，作为表单数据
+///of：取上一级的DkFormFieldParentBaseState
+abstract class DkFormFieldParentBaseState<T extends StatefulWidget>
+    extends DkFormFieldBaseState<T> {
+  void _register(DkFormFieldBaseState<dynamic> field);
+  void _unregister(DkFormFieldBaseState<dynamic> field);
+  void setAttributeValue(String attribute, dynamic value);
+
+  static DkFormFieldParentBaseState of(BuildContext context) {
+    return context
+        .ancestorStateOfType(const TypeMatcher<DkFormFieldParentBaseState>());
+  }
+}
+
+///表单的叶子节点抽象类
+///
+///save保存数据
+///reset恢复为初始值
+///validate数据校验
+abstract class DkFormFieldBaseState<T extends StatefulWidget> extends State<T> {
+  void save();
+  void reset();
+  bool validate();
 }
