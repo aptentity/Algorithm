@@ -39,13 +39,14 @@ class TextFieldDemoPage extends StatelessWidget {
               ),
             ),
             TextField(
+              textAlign: TextAlign.end,
               decoration: InputDecoration(
                 icon: Icon(Icons.person),
-                labelText: 'labelText',
-                labelStyle: TextStyle(
-                  color: Colors.deepOrange,
-                  fontSize: 20,
-                ),
+//                labelText: 'labelText',
+//                labelStyle: TextStyle(
+//                  color: Colors.deepOrange,
+//                  fontSize: 20,
+//                ),
                 helperText: 'help text',
                 helperStyle: TextStyle(
                   color: Colors.green,

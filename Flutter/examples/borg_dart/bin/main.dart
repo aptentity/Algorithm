@@ -23,6 +23,18 @@ class BaseClass {
   }
 }
 
+class A{
+  void init(){
+        print('A init');
+  }
+}
+
+class B{
+  void init(){
+        print('B init');
+  }
+}
+
 class TestClass extends BaseClass with TestMixin, TestMixin2 {
 
   @override
@@ -34,8 +46,21 @@ class TestClass extends BaseClass with TestMixin, TestMixin2 {
   }
 }
 
+class AB extends BaseClass with A,B{
+
+}
+
+class BA extends BaseClass with A,B{}
+
 void main() {
   TestClass();
+
+  AB ab = AB();
+  ab.init();
+
+  BA ba = BA();
+  ba.init();
+
   /// TestClass init start
   /// TestMixin2 init start
   /// TestMixin init start
