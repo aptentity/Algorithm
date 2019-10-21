@@ -64,24 +64,6 @@ class _FormDemoState extends State<FormDemoPage> {
                     _password = val;
                   },
                 ),
-                Container(
-                  child: TextFormField(
-                    autovalidate: true,
-                    decoration: InputDecoration(
-                      labelText: 'Common',
-                    ),
-                    obscureText: true,
-                    validator: (val) {
-                      return val.length < 4 ? "密码长度错误" : null;
-                    },
-                    onSaved: (val) {
-                      _common = val;
-                    },
-                    onFieldSubmitted: (val){
-                      print(val);
-                    },
-                  ),
-                ),
               ],
             ),
           ),
