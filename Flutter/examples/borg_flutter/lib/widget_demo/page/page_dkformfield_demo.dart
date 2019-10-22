@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:borg_flutter/widget/dk_form.dart';
 import 'package:borg_flutter/widget/widget_dk_check_box_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:unicorndial/unicorndial.dart';
 
 class DkFormFieldDemoPage extends StatefulWidget {
   static const String routeName = '/page/dkformfeild_demo_page';
@@ -22,15 +23,42 @@ class DkFormFieldDemoState extends State<DkFormFieldDemoPage> {
     }
   }
 
+  void _forResert(){
+    var _form = _formKey.currentState;
+    _form.reset();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var childButtons = List<UnicornButton>();
+    childButtons.add(UnicornButton(
+      hasLabel: true,
+      labelText: 'reset',
+      currentButton: FloatingActionButton(
+        heroTag: 'reset',
+        backgroundColor: Colors.redAccent,
+        mini: true,
+        child: Icon(Icons.train),
+        onPressed: _forResert,
+      ),
+    ));
+    childButtons.add(UnicornButton(
+      currentButton: FloatingActionButton(
+        child: Text('Save'),
+        onPressed: _forSubmitted,
+      ),
+    ));
+
     return Scaffold(
       appBar: AppBar(
         title: Text('DkFormFieldDemoPage'),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Text('Save'),
-        onPressed: _forSubmitted,
+      floatingActionButton: UnicornDialer(
+          backgroundColor: Color.fromRGBO(255, 255, 255, 0.6),
+          parentButtonBackground: Colors.redAccent,
+          orientation: UnicornOrientation.VERTICAL,
+          parentButton: Icon(Icons.add),
+          childButtons: childButtons
       ),
       body: SingleChildScrollView(
         child:DkForm(
