@@ -92,6 +92,7 @@ class _DkFormScope extends InheritedWidget {
 typedef DkFormFieldSetter<T> = void Function(T newValue);
 typedef DkFormFieldValidator<T> = String Function(T value);
 typedef DkFormFieldBuilder<T> = Widget Function(DkFormFieldState<T> field);
+typedef ValueTransformer<T> = dynamic Function(T value);
 
 class DkFormField<T> extends StatefulWidget {
   final DkFormFieldSetter<T> onSaved;
@@ -101,6 +102,7 @@ class DkFormField<T> extends StatefulWidget {
   final bool autovalidate;
   final bool enabled;
   final String attribute;
+  final ValueTransformer valueTransformer;
 
   const DkFormField({
     Key key,
@@ -111,6 +113,7 @@ class DkFormField<T> extends StatefulWidget {
     this.initialValue,
     this.autovalidate = false,
     this.enabled = true,
+    this.valueTransformer,
   })  : assert(builder != null),
         super(key: key);
   @override
@@ -130,10 +133,16 @@ class DkFormFieldState<T> extends DkFormFieldBaseState<DkFormField<T>>
 
   @override
   void save() {
-    if (widget.onSaved != null) {
-      widget.onSaved(value);
+    dynamic newValue;
+    if(widget.valueTransformer!=null){
+      newValue = widget.valueTransformer(value);
+    }else{
+      newValue = value;
     }
-    saveValue(widget.attribute, value);
+    if (widget.onSaved != null) {
+      widget.onSaved(newValue);
+    }
+    saveValue(widget.attribute, newValue);
   }
 
   @override

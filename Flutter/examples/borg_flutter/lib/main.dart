@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:borg_flutter/widget/widget_dk_check_box_form_field.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:borg_flutter/page/error_page.dart';
@@ -39,6 +40,7 @@ import 'package:borg_flutter/widget_demo/page/page_form_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_dkform_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_inherited_widget_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_textfield_demo.dart';
+import 'package:borg_flutter/widget_demo/page/page_dkformfield_demo.dart';
 
 void main() async{
   var isInDebugMode = false;
@@ -175,6 +177,7 @@ class GLObserver extends NavigatorObserver {
 
 
 var routerName = [
+  DkFormFieldDemoPage.name,
   TextFieldDemoPage.name,
   "Popup Menu Button",
   "Buttons",
@@ -211,6 +214,9 @@ var routerName = [
 ];
 
 Map<String,WidgetBuilder> routers = {
+  DkFormFieldDemoPage.routeName:(context){
+    return DkFormFieldDemoPage();
+  },
   TextFieldDemoPage.routeName:(context){
     return TextFieldDemoPage();
   },

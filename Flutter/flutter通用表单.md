@@ -79,9 +79,15 @@ class _FormDemoState extends State<FormDemoPage> {
 }
 ```
 
-但是flutter的Form表单在取值时相对较为繁琐，考虑用一种
+运行效果：
 
+<img src="/Users/gulliver/work/borg_technology/img/Screenshot_1571647892.png" alt="Screenshot_1571647892" style="zoom: 25%;" />
 
+但是flutter的Form表单在取值时相对较为繁琐，尤其是层级较多时。考虑用一种比较方便的方式获取，这里使用map的形式。map也比较容易转为json。
+
+# 结构
+
+![image-20191021170555085](/Users/gulliver/work/borg_technology/img/image-20191021170555085.png)
 
 # Form
 

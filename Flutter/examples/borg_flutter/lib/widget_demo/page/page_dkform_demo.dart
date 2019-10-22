@@ -65,12 +65,14 @@ class _FormDemoState extends State<DkFormDemoPage> {
             ],
           ),
         ),
-        body: Container(
+        body: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: DkForm(
             key: _formKey,
             child: Column(
               children: <Widget>[
+                LanguageSelect(),
+                DropdownWidget(),
                 DkTextFormField(
                   attribute: 'name',
                   initialValue: 'gulliver',
@@ -173,7 +175,98 @@ class _FormDemoState extends State<DkFormDemoPage> {
   }
 }
 
-class MovieForm extends StatelessWidget{
+class DropdownWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return DkFormField(
+      initialValue: 'Two',
+      attribute: 'drop_down_name',
+      validator: (value) {
+        return value == 'One' ? "密码长度错误" : null;
+      },
+      builder: (DkFormFieldState<dynamic> field) {
+        return InputDecorator(
+          decoration: InputDecoration(
+            labelText: 'Select option',
+            contentPadding: EdgeInsets.only(top: 10.0, bottom: 0.0),
+            border: InputBorder.none,
+            errorText: field.errorText,
+          ),
+          child: DropdownButton(
+            isExpanded: true,
+            items: ["One", "Two"].map((option) {
+              return DropdownMenuItem(
+                child: Text("$option"),
+                value: option,
+              );
+            }).toList(),
+            value: field.value,
+            onChanged: (value) {
+              field.didChange(value);
+            },
+          ),
+        );
+      },
+    );
+  }
+}
+
+class LanguageSelect extends StatelessWidget {
+  final GlobalKey<FormFieldState> _specifyTextFieldKey =
+  GlobalKey<FormFieldState>();
+  @override
+  Widget build(BuildContext context) {
+    return DkFormField(
+      valueTransformer: (value){
+        if(value == 'Other')
+        {
+          value = _specifyTextFieldKey.currentState.value;
+        }
+        return value;
+      },
+      attribute: 'language',
+      builder: (DkFormFieldState<String> field) {
+        var languages = ["English", "Spanish", "Somali", "Other"];
+        return InputDecorator(
+          decoration:
+              InputDecoration(labelText: "What's your preferred language?"),
+          child: Column(
+            children: languages
+                .map(
+                  (lang) => Row(
+                    children: <Widget>[
+                      Radio<dynamic>(
+                        value: lang,
+                        groupValue: field.value,
+                        onChanged: (dynamic value) {
+                          field.didChange(value);
+                        },
+                      ),
+                      lang != 'Other'
+                          ? Text(lang)
+                          : Expanded(
+                              child: Row(
+                                children: <Widget>[
+                                  Text(lang),
+                                  SizedBox(width: 20),
+                                  Expanded(
+                                    child: TextFormField(key: _specifyTextFieldKey),
+                                  ),
+                                ],
+                              ),
+                            ),
+                    ],
+                  ),
+                )
+                .toList(growable: false),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class MovieForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DkFormFieldList(
