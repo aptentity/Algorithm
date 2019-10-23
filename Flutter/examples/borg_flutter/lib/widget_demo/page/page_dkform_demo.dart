@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:borg_flutter/widget/dk_form.dart';
 import 'package:borg_flutter/widget/dk_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:unicorndial/unicorndial.dart';
 
 class DkFormDemoPage extends StatefulWidget {
   static const String routeName = '/page/dkform_demo_page';
@@ -41,29 +42,37 @@ class _FormDemoState extends State<DkFormDemoPage> {
 
   @override
   Widget build(BuildContext context) {
+    var childButtons = List<UnicornButton>();
+    childButtons.add(UnicornButton(
+      hasLabel: true,
+      labelText: 'reset',
+      currentButton: FloatingActionButton(
+        heroTag: 'reset',
+        backgroundColor: Colors.redAccent,
+        mini: true,
+        child: Icon(Icons.train),
+        onPressed: _forReset,
+      ),
+    ));
+    childButtons.add(UnicornButton(
+      currentButton: FloatingActionButton(
+        child: Text('Save'),
+        onPressed: _forSubmitted,
+      ),
+    ));
+
     return MaterialApp(
       title: 'Flutter data',
       home: Scaffold(
         appBar: AppBar(
           title: Text('Flutter Form'),
         ),
-        floatingActionButton: Container(
-          child: Column(
-            children: <Widget>[
-              RaisedButton(
-                onPressed: _forSubmitted,
-                child: Text('提交'),
-              ),
-              RaisedButton(
-                onPressed: _forSubmitted,
-                child: Text('提交'),
-              ),
-              RaisedButton(
-                onPressed: _forReset,
-                child: Text('重置'),
-              ),
-            ],
-          ),
+        floatingActionButton: UnicornDialer(
+            backgroundColor: Color.fromRGBO(255, 255, 255, 0.6),
+            parentButtonBackground: Colors.redAccent,
+            orientation: UnicornOrientation.VERTICAL,
+            parentButton: Icon(Icons.add),
+            childButtons: childButtons
         ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
