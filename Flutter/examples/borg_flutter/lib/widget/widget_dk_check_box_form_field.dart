@@ -19,7 +19,6 @@ class DkCheckBoxFormField extends DkFormField<bool> {
           validator:validator,
           valueTransformer:valueTransformer,
           builder: (DkFormFieldState<bool> field) {
-            print('bulder........');
             final DkFormFieldState state = field;
             void onChangedHandler(bool value) {
               if (onChanged != null) {
@@ -27,7 +26,6 @@ class DkCheckBoxFormField extends DkFormField<bool> {
               }
               field.didChange(value);
             }
-
             return InputDecorator(
               decoration: decoration.copyWith(errorText: state.errorText),
               child: CheckboxListTile(
