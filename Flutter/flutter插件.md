@@ -1,3 +1,27 @@
+# dart库
+
+Petitparser：解析器
+
+Rational：有理数解析
+
+Glob：文件名匹配
+
+path：路径处理
+
+pedantic：
+
+
+
+测试：
+
+matcher：
+
+gherkin
+
+
+
+
+
 # 地图&定位
 
 flutter_amap：高德地图 Flutter 插件。

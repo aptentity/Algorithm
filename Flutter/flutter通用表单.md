@@ -123,14 +123,129 @@ validate
 
 
 
+# 后续
+
+1、级联
+
+2、数据初始化
 
 
-1、嵌套
 
-2、级联
 
-3、选择
 
-4、数据初始化
+https://github.com/LFWheel/flutter_dynamic_page
 
-混入、集成
+https://github.com/dengyin2000/dynamic_widget
+
+https://github.com/OndrejKunc/flutter_dynamic_forms
+
+
+
+数据与UI
+
+绑定：简单，容易控制；接口实现难度大，且不灵活
+
+分离：实现复杂，灵活性差；接口实现难度小
+
+方案：中间层？分离
+
+
+
+# 动态表单
+
+## 场景
+
+1、静态单页表单：单页、固定表单项、固定初始值
+
+2、动态单页表单：单页、固定表单项、动态初始值
+
+3、静态多页表单：多页、固定表单项、固定初始化
+
+4、动态多页表单：多页、固定表单项、动态初始值
+
+5、引导式
+
+## 参数获取
+
+1、跳转参数
+
+2、接口获取
+
+
+
+## 基础表单项
+
+### 布局
+
+#### 表单组
+
+属性：标题、副标题、跳转url
+
+<img src="/Users/gulliver/work/borg_technology/img/2ED5E271-C23A-4263-A2EA-9C0B284EEAA5.png" alt="2ED5E271-C23A-4263-A2EA-9C0B284EEAA5" style="zoom:50%;" />
+
+#### tab
+
+属性：标题
+
+### <img src="/Users/gulliver/work/borg_technology/img/336A1F36-C288-49FB-A9BE-B9D3AC0518F2.png" alt="336A1F36-C288-49FB-A9BE-B9D3AC0518F2" style="zoom:50%;" />
+
+### 输入
+
+#### 单选
+
+属性：主标题、副标题
+
+<img src="/Users/gulliver/work/borg_technology/img/2AEC850E-5045-4902-ABB6-0DDB91FDC9E2.png" alt="2AEC850E-5045-4902-ABB6-0DDB91FDC9E2" style="zoom:50%;" />
+
+#### 单行输入
+
+属性：标题、输入类型、后缀
+
+<img src="/Users/gulliver/work/borg_technology/img/E1B3A49E-FA61-4A7F-B006-A80CCAB49D5C.png" alt="E1B3A49E-FA61-4A7F-B006-A80CCAB49D5C" style="zoom:50%;" />
+
+#### 多行输入
+
+<img src="/Users/gulliver/work/borg_technology/img/375C3B2D-BFC0-46A8-B75E-29D5878AE169.png" alt="375C3B2D-BFC0-46A8-B75E-29D5878AE169" style="zoom:50%;" />
+
+### 选择
+
+#### 日期选择
+
+属性：标题
+
+<img src="/Users/gulliver/work/borg_technology/img/B6BF405C-26B5-4B59-9ABE-A393507AF28C.png" alt="B6BF405C-26B5-4B59-9ABE-A393507AF28C" style="zoom:50%;" />
+
+#### 时间选择
+
+#### 内容选择
+
+#### 加减
+
+### 按钮
+
+### 拍照
+
+<img src="/Users/gulliver/work/borg_technology/img/FE1C9A5F-BB59-4C57-B77E-70BE2C4AF9E4.png" alt="FE1C9A5F-BB59-4C57-B77E-70BE2C4AF9E4" style="zoom:50%;" />
+
+
+
+### 显示
+
+#### 单行显示
+
+<img src="/Users/gulliver/work/borg_technology/img/A5854043-26DA-4F19-85D0-8D8D89E7F5A2.png" alt="A5854043-26DA-4F19-85D0-8D8D89E7F5A2" style="zoom:50%;" />
+
+#### 图片
+
+#### 地图
+
+### 提示
+
+### 提交
+
+1、直接提交
+
+2、确认提交
+
+动态列表
+
