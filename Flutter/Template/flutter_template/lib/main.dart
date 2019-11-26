@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_template/network/http_client_manager.dart';
 import 'package:flutter_template/config/env.dart';
+import 'package:flutter_template/router/borg_router.dart';
+import 'package:flutter_template/router/routers.dart';
 
 void main() async{
   await Env().init();
@@ -37,11 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
 
-    HttpClientManager().get('http://www.baidu.com', null, ((data){
-      print(data);
-    }), (code,msg){
-      print('code=$code msg=$msg');
-    });
+    Router.push(context, 'http://www.baidu.com');
   }
 
   @override
