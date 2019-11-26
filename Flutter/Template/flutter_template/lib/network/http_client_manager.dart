@@ -55,6 +55,9 @@ class HttpClientManager {
       response = await dio.get(url, queryParameters: params);
     } on DioError catch (error) {
       _dioError(errorCallBack, error);
+      return;
+    }catch(error){
+      print(error);
     }
     _success(response, successCallBack, errorCallBack);
   }
@@ -66,6 +69,8 @@ class HttpClientManager {
       response = await dio.post(url, data: params);
     } on DioError catch (error) {
       _dioError(errorCallBack, error);
+    }catch(error){
+      print(error);
     }
     _success(response, successCallBack, errorCallBack);
   }

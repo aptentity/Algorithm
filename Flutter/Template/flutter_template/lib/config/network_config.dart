@@ -6,8 +6,8 @@ class NetWorkConfig {
   int receiveTimeout=10000;
 
   NetWorkConfig(
-      {this.localProxyIPAddress,
-      this.localProxyPort='8000',
+      {this.localProxyIPAddress='172.16.41.163',
+      this.localProxyPort='8888',
       this.connectTimeout,
       this.receiveTimeout});
 }

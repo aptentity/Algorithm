@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_template/config/network_config.dart';
 import 'package:flutter_template/utils/device_info.dart';
 import 'package:flutter_template/utils/package_info.dart';
+import 'package:flutter_template/network/http_client_manager.dart';
+import 'package:flutter_template/network/header_interceptor.dart';
 
 class Env{
   static final Env _env = Env._internal();
@@ -28,6 +30,7 @@ class Env{
     packageInfo = await PackageInfoUtil.getPackageInfo();
     debugPrint(packageInfo.toString());
 
+    HttpClientManager().addInterceptor(HeaderInterceptor());
   }
 }
 

@@ -1,11 +1,9 @@
-import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:flutter_template/network/http_client_manager.dart';
 import 'package:flutter_template/config/env.dart';
 
-void main(){
-  Env().init();
+void main() async{
+  await Env().init();
   runApp(MyApp());
 }
 
@@ -39,7 +37,11 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
 
-    Env().init();
+    HttpClientManager().get('http://www.baidu.com', null, ((data){
+      print(data);
+    }), (code,msg){
+      print('code=$code msg=$msg');
+    });
   }
 
   @override

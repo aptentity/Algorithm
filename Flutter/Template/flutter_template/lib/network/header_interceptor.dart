@@ -6,6 +6,7 @@ import 'package:flutter_template/config/env.dart';
 class HeaderInterceptor extends Interceptor{
   @override
   onRequest(RequestOptions options) async {
+    print('HeaderInterceptor onRequest');
     Map<String,dynamic> header = Map();
     Map<String,String> xDevice = Map();
     xDevice..addAll(Env().packageInfo.toMap())..addAll(Env().deviceInfo.toMap());
