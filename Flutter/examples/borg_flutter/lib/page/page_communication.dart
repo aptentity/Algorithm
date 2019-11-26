@@ -196,6 +196,7 @@ class ChildTwoState extends State<ChildTwo> {
                       child: new TextField(
                           controller: controller,
                           onChanged: _onChanged,
+                          enabled: false,
                           decoration: (new InputDecoration(labelText: '请输入你要发送的值'))
                       )
                   ),

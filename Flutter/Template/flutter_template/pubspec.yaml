@@ -1,5 +1,5 @@
-name: borg_flutter
-description: A new Flutter application.
+name: flutter_template
+description: flutter template
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -20,51 +20,25 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # 网络请求客户端 https://pub.dartlang.org/packages/dio
+  dio: ^2.1.13
+  # dart常用工具库 https://pub.dartlang.org/packages/quiver  https://github.com/google/quiver-dart
+  quiver: '>=2.0.0 <3.0.0'
+
+  device_info: ^0.4.1+1
+  package_info: ^0.4.0
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-
-
-  route_annotation: ^0.1.0
-
-  # webview
-  flutter_webview_plugin: ^0.3.5
-  webview_flutter: ^0.3.11+2
-
-  # html
-  flutter_html: ^0.10.4
-
-  flutter_swiper: ^1.1.6
-
-  provider: ^3.0.0+1
-
-  flutter_bloc: ^0.20.1
-
-  oktoast: ^2.2.0
-
-  # 网络请求客户端 https://pub.dartlang.org/packages/dio
-  dio: ^2.1.16
-
-  path_provider: ^1.2.0
-
-  event_bus: ^1.0.1
-
-  unicorndial: "^1.1.5"
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  # 使用dart代码生成文件的库 https://pub.dartlang.org/packages/build_runner
-  build_runner: any
-  #https://github.com/alibaba-flutter/annotation_route
-  annotation_route: any
-
-  #路由：https://github.com/theyakka/fluro
-  fluro: ^1.5.1
 
 # For information on the generic Dart part of this file, see the
-# following page: https://www.dartlang.org/tools/pub/pubspec
+# following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
@@ -78,16 +52,6 @@ flutter:
   # assets:
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
-
-  # asset_generator 根据pubspec.yaml中设置的目录模板自动向其中添加文件记录的简单脚本
-  # 利用asset_generator脚本生成r.dart 资源文件,方便在代码中引用资源
-  # https://github.com/flutter-dev/asset_generator
-
-  assets:
-  # assets begin
-  # images/*
-    - assets/images/
-  # assets end
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
