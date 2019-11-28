@@ -49,7 +49,6 @@ toast.ToastFuture dkShowToast(
     }) =>
     toast.showToast(
       msg,
-      context: MyApp.myContext,
       duration: duration,
       position: position,
       textStyle: textStyle,

@@ -41,8 +41,9 @@ import 'package:borg_flutter/widget_demo/page/page_dkform_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_inherited_widget_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_textfield_demo.dart';
 import 'package:borg_flutter/widget_demo/page/page_dkformfield_demo.dart';
+import 'package:oktoast/oktoast.dart';
 
-void main() async{
+void main() async {
   var isInDebugMode = false;
 
   ErrorWidget.builder = (FlutterErrorDetails details) {
@@ -58,14 +59,16 @@ void main() async{
     }
   };
   runZoned<Future<Null>>(() async {
-    InnerWidgetsFlutterBinding.ensureInitialized()..attachRootWidget(MyApp())..scheduleForcedFrame();
+    InnerWidgetsFlutterBinding.ensureInitialized()
+      ..attachRootWidget(MyApp())
+      ..scheduleForcedFrame();
     //runApp(MyApp());
   }, onError: (error, stackTrace) async {
     _handleError(error, stackTrace);
   });
 }
 
-void  _handleError(error, stackTrace) async{
+void _handleError(error, stackTrace) async {
   print("--------------_handleError begin---------------");
   print(error);
   print(stackTrace);
@@ -73,6 +76,7 @@ void  _handleError(error, stackTrace) async{
 }
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
 class MyApp extends StatelessWidget {
   static BuildContext myContext;
   @override
@@ -82,36 +86,40 @@ class MyApp extends StatelessWidget {
     Routes.configureRoutes(router);
 
     myContext = context;
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return OKToast(
+      textStyle: TextStyle(fontSize: 19.0, color: Colors.white),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
+        routes: routers,
+        navigatorObservers: [
+          GLObserver(), // 导航监听
+          routeObserver, // 路由监听
+        ],
+        onGenerateRoute: Application.router.generator,
+        builder: (BuildContext context, Widget child) {
+          return Container(
+            child: child,
+          );
+        },
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-      routes: routers,
-      navigatorObservers: [
-        GLObserver(), // 导航监听
-        routeObserver, // 路由监听
-      ],
-      onGenerateRoute: Application.router.generator,
-      builder: (BuildContext context, Widget child){
-        return Container(child: child,);
-      },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget{
+class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState()=>_MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>{
-
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var routerLists = routers.keys.toList();
@@ -122,10 +130,10 @@ class _MyHomePageState extends State<MyHomePage>{
       body: new Container(
         child: new ListView.builder(
           itemCount: routers.length,
-          itemBuilder: (context,index){
+          itemBuilder: (context, index) {
             //print("---------------------$index-------------------");
             return new InkWell(
-              onTap: (){
+              onTap: () {
                 Navigator.of(context).pushNamed(routerLists[index]);
               },
               child: new Card(
@@ -144,7 +152,6 @@ class _MyHomePageState extends State<MyHomePage>{
   }
 }
 
-
 class GLObserver extends NavigatorObserver {
   // 添加导航监听后，跳转的时候需要使用Navigator.push路由
   @override
@@ -154,7 +161,7 @@ class GLObserver extends NavigatorObserver {
     var previousName = '';
     if (previousRoute == null) {
       previousName = 'null';
-    }else {
+    } else {
       previousName = previousRoute.settings.name;
     }
     print('NavObserverDidPush-Current: $route  Previous: $previousName');
@@ -167,14 +174,12 @@ class GLObserver extends NavigatorObserver {
     var previousName = '';
     if (previousRoute == null) {
       previousName = 'null';
-    }else {
+    } else {
       previousName = previousRoute.settings.name;
     }
     print('NavObserverDidPop--Current: $route  Previous: $previousName');
   }
 }
-
-
 
 var routerName = [
   DkFormFieldDemoPage.name,
@@ -213,111 +218,109 @@ var routerName = [
   InheritedPage.name,
 ];
 
-Map<String,WidgetBuilder> routers = {
-  DkFormFieldDemoPage.routeName:(context){
+Map<String, WidgetBuilder> routers = {
+  DkFormFieldDemoPage.routeName: (context) {
     return DkFormFieldDemoPage();
   },
-  TextFieldDemoPage.routeName:(context){
+  TextFieldDemoPage.routeName: (context) {
     return TextFieldDemoPage();
   },
   "widget/popup_menu_button": (context) {
     return PopupMenuPage();
   },
-  "widget/buttons":(context){
+  "widget/buttons": (context) {
     return ButtonsPage();
   },
-  "widget/dropdown_button":(context){
+  "widget/dropdown_button": (context) {
     return DropdownButtonPage();
   },
-  ExpansionPanelsDemo.routeName:(context){
+  ExpansionPanelsDemo.routeName: (context) {
     return ExpansionPanelsDemo();
   },
-  FlutterWebviewPluginPage.routeName:(context){
+  FlutterWebviewPluginPage.routeName: (context) {
     return FlutterWebviewPluginPage();
   },
-  WebViewFlutterPage.routeName:(context){
+  WebViewFlutterPage.routeName: (context) {
     return WebViewFlutterPage();
   },
-  HtmlPage.routeName:(context){
+  HtmlPage.routeName: (context) {
     return HtmlPage();
   },
-  TabBarPage.routeName:(context){
+  TabBarPage.routeName: (context) {
     return TabBarPage();
   },
-  BottomNavigationBarPage.routeName:(context){
+  BottomNavigationBarPage.routeName: (context) {
     return BottomNavigationBarPage();
   },
-  BottomAppBarPage.routeName:(context){
+  BottomAppBarPage.routeName: (context) {
     return BottomAppBarPage();
   },
-  SliverPage.routeName:(context){
+  SliverPage.routeName: (context) {
     return SliverPage();
   },
-  SliverAppBarPage.routeName:(context){
+  SliverAppBarPage.routeName: (context) {
     return SliverAppBarPage();
   },
-  ProviderPage.routeName:(context){
+  ProviderPage.routeName: (context) {
     return ProviderPage();
   },
-  BlocPage.routeName:(context){
+  BlocPage.routeName: (context) {
     return BlocPage();
   },
-  RowDemoPage.routeName:(context){
+  RowDemoPage.routeName: (context) {
     return RowDemoPage();
   },
-  StackDemoPage.routeName:(context){
+  StackDemoPage.routeName: (context) {
     return StackDemoPage();
   },
-  HeroSourcePage.routeName:(context){
+  HeroSourcePage.routeName: (context) {
     return HeroSourcePage();
   },
-  AnimationDemoPage.routeName:(context){
+  AnimationDemoPage.routeName: (context) {
     return AnimationDemoPage();
   },
-  RepaintBoundaryDemo.routeName:(context){
+  RepaintBoundaryDemo.routeName: (context) {
     return RepaintBoundaryDemo();
   },
-  ProviderDemoPage.routeName:(context){
+  ProviderDemoPage.routeName: (context) {
     return ProviderDemoPage();
   },
-  CommunicationPage.routeName:(context){
-    return CommunicationPage(title: 'CommunicationPage',);
+  CommunicationPage.routeName: (context) {
+    return CommunicationPage(
+      title: 'CommunicationPage',
+    );
   },
-  NetworkPage.routeName:(context){
+  NetworkPage.routeName: (context) {
     return NetworkPage();
   },
-  SwapColorPage.routeName:(context){
+  SwapColorPage.routeName: (context) {
     return SwapColorPage();
   },
-  SwapColorPage2.routeName:(context){
+  SwapColorPage2.routeName: (context) {
     return SwapColorPage2(null);
   },
-  FlutterLifeCycle.routeName:(context){
+  FlutterLifeCycle.routeName: (context) {
     return FlutterLifeCycle();
   },
-  SignatureDemoPage.routeName:(context){
+  SignatureDemoPage.routeName: (context) {
     return SignatureDemoPage();
   },
-  MultiRouterPage.routeName:(context){
+  MultiRouterPage.routeName: (context) {
     return MultiRouterPage();
   },
-  OverlayDemoPage.routeName:(context){
+  OverlayDemoPage.routeName: (context) {
     return OverlayDemoPage();
   },
-  CachePage.routeName:(context){
+  CachePage.routeName: (context) {
     return CachePage();
   },
-  FormDemoPage.routeName:(context){
+  FormDemoPage.routeName: (context) {
     return FormDemoPage();
   },
-  DkFormDemoPage.routeName:(context){
+  DkFormDemoPage.routeName: (context) {
     return DkFormDemoPage();
   },
-  InheritedPage.routeName:(context){
+  InheritedPage.routeName: (context) {
     return InheritedPage();
   },
 };
-
-
-
-

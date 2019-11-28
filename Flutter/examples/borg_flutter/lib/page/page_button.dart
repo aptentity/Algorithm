@@ -1,3 +1,4 @@
+import 'package:borg_flutter/utils/toast_util.dart';
 import 'package:flutter/material.dart';
 import 'package:borg_flutter/widget/widget_demo.dart';
 import 'package:borg_flutter/widget/widget_my_custom_painter.dart';
@@ -65,6 +66,7 @@ class ButtonsPage extends StatelessWidget {
 
   void clickButton() {
     print("click button");
+    showLongToast('click button');
   }
 }
 
