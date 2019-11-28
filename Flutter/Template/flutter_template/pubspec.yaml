@@ -19,6 +19,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   # 网络请求客户端 https://pub.dartlang.org/packages/dio
   dio: ^2.1.13

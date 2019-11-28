@@ -44,7 +44,9 @@ class _HomeState extends State<HomePage> {
         footer: ClassicalFooter(),
         slivers: <Widget>[
           SliverToBoxAdapter(
-            child: AptBanner(list: list,),
+            child: AptBanner(
+              list: list,
+            ),
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
@@ -66,7 +68,13 @@ class _HomeState extends State<HomePage> {
           print('onRefresh');
           setState(() {
             _count = 10;
-            list.removeLast();
+            if (list.length == 1) {
+              list.add(BannerItem(
+                  "http:\/\/minimg.hexun.com\/i7.hexun.com\/2015-11-16\/180596378_c324x234.jpg",
+                  'http://www.${list.length+1}.com'));
+            } else {
+              list.removeLast();
+            }
           });
           _controller.resetLoadState();
         },

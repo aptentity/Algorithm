@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/business/home/home_page.dart';
 import 'package:flutter_template/business/main/main_page.dart';
-import 'package:flutter_template/network/http_client_manager.dart';
 import 'package:flutter_template/config/env.dart';
-import 'package:flutter_template/router/borg_router.dart';
-import 'package:flutter_template/utils/toast_util.dart';
 import 'package:oktoast/oktoast.dart';
 import 'page/error_page.dart';
 import 'dart:async';
 import 'screen_adapter/Inner_widgets_flutter_binding.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   await Env().init();
@@ -46,14 +43,24 @@ void _handleError(error, stackTrace) async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return OKToast(
-      child: MaterialApp(
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+    return ExcludeSemantics(
+      excluding: true,
+      child: OKToast(
+        child: MaterialApp(
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: MainPage(),
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: [
+            const Locale('zh', 'CH'),
+          ],
         ),
-        home: MainPage(),
+        textStyle: TextStyle(fontSize: 19.0, color: Colors.white),
       ),
-      textStyle: TextStyle(fontSize: 19.0, color: Colors.white),
     );
   }
 }

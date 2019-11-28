@@ -72,7 +72,7 @@ class _MainState extends State<MainPage> with SingleTickerProviderStateMixin {
     );
   }
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   void _onItemSelected(int index) {
     setState(() {
