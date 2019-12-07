@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:borg_flutter/page/page_draggable.dart';
 import 'package:borg_flutter/widget/widget_dk_check_box_form_field.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -216,6 +217,7 @@ var routerName = [
   FormDemoPage.name,
   DkFormDemoPage.name,
   InheritedPage.name,
+  DragPage.name,
 ];
 
 Map<String, WidgetBuilder> routers = {
@@ -322,5 +324,8 @@ Map<String, WidgetBuilder> routers = {
   },
   InheritedPage.routeName: (context) {
     return InheritedPage();
+  },
+  DragPage.routeName:(context){
+    return DragPage();
   },
 };

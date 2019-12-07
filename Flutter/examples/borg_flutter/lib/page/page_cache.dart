@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:borg_flutter/utils/toast_util.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 
 class CachePage extends StatefulWidget {
   static const String routeName = '/page/cache_page';
@@ -30,6 +31,15 @@ class CachePageState extends State<CachePage> {
         children: <Widget>[
           Text(cacheSize),
           RaisedButton(child: Text('Clean'),onPressed: ()=>_clearCache(),),
+          CountryCodePicker(
+            initialSelection: 'IT',
+            favorite: ['+39','FR'],
+            showCountryOnly: false,
+            alignLeft: false,
+            onChanged: (countryCode){
+              print("New Country selected: " + countryCode.toString());
+            },
+          ),
         ],
       ),
     );

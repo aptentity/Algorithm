@@ -41,6 +41,7 @@ dependencies:
   flutter_bloc: ^0.20.1
 
   oktoast: ^2.2.0
+  country_code_picker: ^1.1.7
 
   # 网络请求客户端 https://pub.dartlang.org/packages/dio
   dio: ^2.1.16
