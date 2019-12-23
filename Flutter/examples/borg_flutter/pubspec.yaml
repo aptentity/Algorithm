@@ -52,12 +52,27 @@ dependencies:
 
   unicorndial: "^1.1.5"
 
+  # mobx
+  mobx: ^0.3.10
+  flutter_mobx: ^0.3.4+1
+
+  connectivity:
+  shared_preferences:
+  validators:
+  url_launcher:
+  hnpwa_client:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   # 使用dart代码生成文件的库 https://pub.dartlang.org/packages/build_runner
+  # pub run build_runner build
+  # flutter packages pub run build_runner build
   build_runner: any
+
+  mobx_codegen: ^0.3.9
+
   #https://github.com/alibaba-flutter/annotation_route
   annotation_route: any
 

@@ -127,6 +127,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.14.11"
+  connectivity:
+    dependency: "direct main"
+    description:
+      name: connectivity
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.4.6"
   convert:
     dependency: transitive
     description:
@@ -141,6 +148,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.1"
+  country_code_picker:
+    dependency: "direct main"
+    description:
+      name: country_code_picker
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.7"
   crypto:
     dependency: transitive
     description:
@@ -216,6 +230,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.10.4"
+  flutter_mobx:
+    dependency: "direct main"
+    description:
+      name: flutter_mobx
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.4+1"
   flutter_page_indicator:
     dependency: transitive
     description:
@@ -263,6 +284,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.2.0"
+  hnpwa_client:
+    dependency: "direct main"
+    description:
+      name: hnpwa_client
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0"
   html:
     dependency: transitive
     description:
@@ -347,6 +375,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.9.6+3"
+  mobx:
+    dependency: "direct main"
+    description:
+      name: mobx
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.10"
+  mobx_codegen:
+    dependency: "direct dev"
+    description:
+      name: mobx_codegen
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.10+1"
   mustache4dart:
     dependency: transitive
     description:
@@ -459,6 +501,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.22.1+1"
+  shared_preferences:
+    dependency: "direct main"
+    description:
+      name: shared_preferences
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.5.4+8"
+  shared_preferences_platform_interface:
+    dependency: transitive
+    description:
+      name: shared_preferences_platform_interface
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.1"
   shelf:
     dependency: transitive
     description:
@@ -562,6 +618,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.5"
+  url_launcher:
+    dependency: "direct main"
+    description:
+      name: url_launcher
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "5.2.1"
+  validators:
+    dependency: "direct main"
+    description:
+      name: validators
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.0+1"
   vector_math:
     dependency: transitive
     description:
@@ -599,4 +669,4 @@ packages:
     version: "2.2.0"
 sdks:
   dart: ">=2.3.0 <3.0.0"
-  flutter: ">=1.5.0 <2.0.0"
+  flutter: ">=1.6.7 <2.0.0"

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:borg_flutter/mobx/multi_counter/multi_counter_widgets.dart';
+import 'package:borg_flutter/mobx/page_mobx_demo.dart';
 import 'package:borg_flutter/page/page_draggable.dart';
 import 'package:borg_flutter/widget/widget_dk_check_box_form_field.dart';
 import 'package:flutter/foundation.dart';
@@ -183,6 +185,7 @@ class GLObserver extends NavigatorObserver {
 }
 
 var routerName = [
+  MobxDemo.name,
   DkFormFieldDemoPage.name,
   TextFieldDemoPage.name,
   "Popup Menu Button",
@@ -221,6 +224,9 @@ var routerName = [
 ];
 
 Map<String, WidgetBuilder> routers = {
+  MobxDemo.routeName: (context) {
+    return MobxDemo();
+  },
   DkFormFieldDemoPage.routeName: (context) {
     return DkFormFieldDemoPage();
   },
