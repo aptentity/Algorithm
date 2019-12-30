@@ -150,13 +150,7 @@ flutter_redux**：在 Flutter 上使用 Redux。
 
 
 
-**scalable_image**：也是一个图片手势放缩效果模块。
 
-
-
-![img](https:////upload-images.jianshu.io/upload_images/2400087-7de8c9e8a7586655.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/296)
-
-image
 
 
 
@@ -170,14 +164,6 @@ image
 
 
 
-**flutter_swiper**：轮播图组件。
 
 
 
-![img](https:////upload-images.jianshu.io/upload_images/2400087-888af2225f8bbb0d.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/360)
-
-
-
-
-
-**zoomable_image**：一个图片手势放缩效果模块。
